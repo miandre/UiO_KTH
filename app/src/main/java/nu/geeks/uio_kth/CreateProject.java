@@ -18,6 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.geeks.uio_kth.Adapters.SpinnerAdapter;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
 
 public class CreateProject extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -38,7 +39,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         setContentView(R.layout.activity_create_project);
 
         Typeface caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
-        Typeface icons = Typeface.createFromAsset(getAssets(), "Hipster Icons.ttf");
+
 
         etPassword = (EditText) findViewById(R.id.etPassword);
         etProjectName = (EditText) findViewById(R.id.etProjectName);
@@ -66,11 +67,10 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         }
 
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(
                 this,android.R.layout.simple_spinner_item,spinnerArray
         );
 
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         iconSpinner = (Spinner) findViewById(R.id.iconSpinner);
         iconSpinner.setAdapter(spinnerAdapter);
         iconSpinner.setOnItemSelectedListener(this);
