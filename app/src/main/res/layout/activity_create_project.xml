@@ -70,11 +70,29 @@
         android:layout_gravity="center_horizontal"
         android:hint="*******" />
 
-    <Spinner
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Select Icon"
+        android:textSize="20dp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:id="@+id/tv_set_icon"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"
+        android:layout_gravity="center_horizontal" />
+
+    <Spinner
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
         android:id="@+id/iconSpinner"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dialog"
+        android:focusable="true"
+        android:layout_gravity="center_horizontal" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -2,6 +2,7 @@ package nu.geeks.uio_kth.Adapters;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import java.util.List;
 public class SpinnerAdapter extends ArrayAdapter<String> {
 
     Typeface icons = Typeface.createFromAsset(getContext().getAssets(),
-            "icons.ttf");
+            "icons3.ttf");
 
     public SpinnerAdapter(Context context, int resource, List<String> objects) {
         super(context, resource, objects);
@@ -27,6 +28,8 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView view = (TextView) super.getView(position, convertView, parent);
         view.setTypeface(icons);
+        view.setTextSize(80);
+        view.setTextColor(Color.BLACK);
         return view;
     }
 
@@ -35,6 +38,8 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         TextView view = (TextView) super.getView(position, convertView, parent);
         view.setTypeface(icons);
+        view.setTextSize(80);
+        view.setTextColor(Color.BLACK);
         return view;
     }
 }

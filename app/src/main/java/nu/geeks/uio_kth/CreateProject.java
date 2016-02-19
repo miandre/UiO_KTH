@@ -26,7 +26,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
     Button bCreate,bView;
     EditText etPassword, etProjectName;
-    TextView tv_create_project,tv_create_name,tv_create_password;
+    TextView tv_create_project,tv_create_name,tv_create_password, tv_set_icon;
     Context context;
     ProjectDbHelper projectDbHelper;
     SQLiteDatabase sqLiteDatabase;
@@ -47,7 +47,9 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         tv_create_project = (TextView) findViewById(R.id.tv_create_project);
         tv_create_name = (TextView) findViewById(R.id.tv_create_name);
         tv_create_password = (TextView) findViewById(R.id.tv_create_password);
+        tv_set_icon = (TextView) findViewById(R.id.tv_set_icon);
 
+        tv_set_icon.setTypeface(caviarBold);
         tv_create_project.setTypeface(caviarBold);
         tv_create_name.setTypeface(caviarBold);
         tv_create_password.setTypeface(caviarBold);
@@ -68,7 +70,9 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
 
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(
-                this,android.R.layout.simple_spinner_item,spinnerArray
+                getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                spinnerArray
         );
 
         iconSpinner = (Spinner) findViewById(R.id.iconSpinner);
