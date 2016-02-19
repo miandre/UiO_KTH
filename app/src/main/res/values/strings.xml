@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SQLite_test</string>
+    <string name="title_activity_project_list">ProjectListActivity</string>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:paddingLeft="7dp"
+    >
+<TextView
+    android:layout_marginTop="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/tv_project_name"
+    android:text="Project Name"
+    android:gravity="left"
+    android:textSize="26dp"
+    android:textStyle="bold"
+    android:textColor="#FFFFFF"
+    android:shadowColor="#000000"
+    android:shadowDx="1"
+    android:shadowDy="1"
+    android:shadowRadius="3"
+    android:paddingBottom="2dp" />
+<!--
+    <TextView
+
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_project_password"
+        android:text="Project Password"
+        android:gravity="left"
+        android:textColor="#000000"
+        />
+        -->
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_project_id"
+        android:text="Project ID"
+        android:gravity="left"
+        android:textColor="#000000"/>
+
+
+</LinearLayout>
