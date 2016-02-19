@@ -18,6 +18,9 @@
         <activity
             android:name=".CreateProject"
             android:label="Create New Project"></activity>
+        <activity
+            android:name=".ProjectContentView"
+            android:label="Project Content View"></activity>
     </application>
 
 </manifest>
