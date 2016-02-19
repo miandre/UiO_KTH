@@ -25,7 +25,7 @@ import nu.geeks.uio_kth.Database.ProjectDbHelper;
  * Created by Micke on 2016-02-17.
  */
 
-//TODO - fix back button function
+
 public class ProjectView extends Activity implements View.OnClickListener {
 
     ListView listView;
@@ -75,11 +75,13 @@ public class ProjectView extends Activity implements View.OnClickListener {
 
         if (cursor.moveToFirst()) {
             do {
-                String projectName, projectPassword, projectId;
+                String projectName, projectPassword, projectId, projectIcon;
                 projectName = cursor.getString(0);
                 projectPassword = cursor.getString(1);
                 projectId = cursor.getString(2);
-                DataProvider dataProvider = new DataProvider(projectName, projectPassword, projectId);
+                projectIcon = cursor.getString(3);
+
+                DataProvider dataProvider = new DataProvider(projectName, projectPassword, projectId, projectIcon);
                 projectDataAdapter.add(dataProvider);
 
             } while (cursor.moveToNext());

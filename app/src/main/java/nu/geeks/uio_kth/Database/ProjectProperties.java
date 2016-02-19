@@ -9,6 +9,7 @@ public class ProjectProperties {
         public static final String PROJECT_NAME = "project_name";
         public static final String PROJECT_PASSWORD = "project_password";
         public static final String PROJECT_ID = "project_id";
+        public static final String PROJECT_ICON = "project_icon";
         public static final String TABLE_NAME = "current_projects";
     }
 

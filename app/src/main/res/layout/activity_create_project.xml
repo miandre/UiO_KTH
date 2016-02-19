@@ -76,7 +76,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Select Icon"
         android:textSize="20dp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         android:id="@+id/tv_set_icon"
         android:textColor="#FFFFFF"
@@ -87,7 +86,8 @@
         android:layout_gravity="center_horizontal" />
 
     <Spinner
-        android:layout_width="176dp"
+        android:layout_width="wrap_content"
+        android:paddingTop="5dp"
         android:layout_height="wrap_content"
         android:id="@+id/iconSpinner"
         android:spinnerMode="dialog"

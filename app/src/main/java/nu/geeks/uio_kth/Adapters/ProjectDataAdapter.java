@@ -27,7 +27,7 @@ public class ProjectDataAdapter extends ArrayAdapter {
     }
 
     static class LayoutHandler{
-        TextView PROJECT_NAME,PROJECT_PASSWORD,PROJECT_ID;
+        TextView PROJECT_NAME,PROJECT_PASSWORD,PROJECT_ID, PROJECT_ICON;
 
     }
 
@@ -59,6 +59,7 @@ public class ProjectDataAdapter extends ArrayAdapter {
         LayoutHandler layoutHandler;
         Typeface caviarDreams = Typeface.createFromAsset(this.getContext().getAssets(),"CaviarDreams.ttf");
         Typeface tower = Typeface.createFromAsset(this.getContext().getAssets(),"HTOWERT.TTF");
+        Typeface icons = Typeface.createFromAsset(this.getContext().getAssets(),"icons3.ttf");
         if(row == null){
             LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = layoutInflater.inflate(R.layout.list_item,parent,false);
@@ -66,8 +67,11 @@ public class ProjectDataAdapter extends ArrayAdapter {
             layoutHandler.PROJECT_NAME = (TextView) row.findViewById(R.id.tv_project_name);
             //layoutHandler.PROJECT_PASSWORD = (TextView) row.findViewById(R.id.tv_project_password);
             layoutHandler.PROJECT_ID = (TextView) row.findViewById(R.id.tv_project_id);
+            layoutHandler.PROJECT_ICON = (TextView) row.findViewById(R.id.tv_project_icon);
+
             layoutHandler.PROJECT_NAME.setTypeface(caviarDreams);
             layoutHandler.PROJECT_ID.setTypeface((tower));
+            layoutHandler.PROJECT_ICON.setTypeface(icons);
 
 
             row.setTag(layoutHandler);
@@ -79,6 +83,7 @@ public class ProjectDataAdapter extends ArrayAdapter {
         layoutHandler.PROJECT_NAME.setText(dataProvider.getProjectName());
         //layoutHandler.PROJECT_PASSWORD.setText(dataProvider.getProjectPassword());
         layoutHandler.PROJECT_ID.setText(dataProvider.getProjectId());
+        layoutHandler.PROJECT_ICON.setText(dataProvider.getProjectIcon());
 
         return row;
     }

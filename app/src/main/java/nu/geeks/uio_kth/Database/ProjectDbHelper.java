@@ -15,7 +15,7 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String CREATE_QUERY = "CREATE TABLE "+ProjectProperties.NewProjectData.TABLE_NAME+
             " ("+ProjectProperties.NewProjectData.PROJECT_NAME+" TEXT,"+ ProjectProperties.NewProjectData.PROJECT_PASSWORD+
-            " TEXT,"+ProjectProperties.NewProjectData.PROJECT_ID+" TEXT);";
+            " TEXT,"+ProjectProperties.NewProjectData.PROJECT_ID+" TEXT,"+ ProjectProperties.NewProjectData.PROJECT_ICON+" TEXT);";
 
     public ProjectDbHelper(Context context){
 
@@ -30,13 +30,14 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
         Log.e("DATABASE OPERATIONS", "Table created");
     }
 
-    public void addProjectData(String projectName, String projectPassword, SQLiteDatabase db){
+    public void addProjectData(String projectName, String projectPassword, String projectIcon, SQLiteDatabase db){
 
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_NAME,projectName);
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_PASSWORD,projectPassword);
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_ID,generateProjectId());
+        contentValues.put(ProjectProperties.NewProjectData.PROJECT_ICON,projectIcon);
         db.insert(ProjectProperties.NewProjectData.TABLE_NAME, null, contentValues);
 
         Log.e("DATABASE OPERATIONS", "New Project Added");
@@ -44,7 +45,7 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
 
     public Cursor getProjects(SQLiteDatabase db){
 
-        String[] projections = {ProjectProperties.NewProjectData.PROJECT_NAME, ProjectProperties.NewProjectData.PROJECT_PASSWORD, ProjectProperties.NewProjectData.PROJECT_ID};
+        String[] projections = {ProjectProperties.NewProjectData.PROJECT_NAME, ProjectProperties.NewProjectData.PROJECT_PASSWORD, ProjectProperties.NewProjectData.PROJECT_ID, ProjectProperties.NewProjectData.PROJECT_ICON};
 
         return db.query(ProjectProperties.NewProjectData.TABLE_NAME,projections,null,null,null,null,null);
 

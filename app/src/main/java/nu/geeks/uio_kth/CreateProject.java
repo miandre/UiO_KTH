@@ -31,6 +31,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
     ProjectDbHelper projectDbHelper;
     SQLiteDatabase sqLiteDatabase;
     Spinner iconSpinner;
+    int spinnerIndex=0;
     List<String> spinnerArray = new ArrayList<String>();
 
     @Override
@@ -99,9 +100,10 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         context = this;
         String projectName = etProjectName.getText().toString();
         String projectPassword = etPassword.getText().toString();
+        String projectIcon = spinnerArray.get(spinnerIndex);
         projectDbHelper = new ProjectDbHelper(context);
         sqLiteDatabase = projectDbHelper.getWritableDatabase();
-        projectDbHelper.addProjectData(projectName,projectPassword,sqLiteDatabase);
+        projectDbHelper.addProjectData(projectName,projectPassword, projectIcon,sqLiteDatabase);
         Toast.makeText(getBaseContext(),"Project Saved",Toast.LENGTH_SHORT).show();
         projectDbHelper.close();
     }
@@ -114,7 +116,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        
+        spinnerIndex=position;
     }
 
     @Override

@@ -5,11 +5,13 @@ public class DataProvider  {
     private String projectName;
     private String projectPassword;
     private String projectId;
+    private String projectIcon;
 
-    public DataProvider(String projectName, String projectPassword, String projectId) {
+    public DataProvider(String projectName, String projectPassword, String projectId, String projectIcon) {
         this.projectName = projectName;
         this.projectPassword = projectPassword;
         this.projectId = projectId;
+        this.projectIcon=projectIcon;
     }
 
     public String getProjectName() {
@@ -34,5 +36,13 @@ public class DataProvider  {
 
     public void setProjectId(String projectId) {
         this.projectId = projectId;
+    }
+
+    public String getProjectIcon() {
+        return projectIcon;
+    }
+
+    public void setProjectIcon(String projectIcon) {
+        this.projectIcon = projectIcon;
     }
 }
