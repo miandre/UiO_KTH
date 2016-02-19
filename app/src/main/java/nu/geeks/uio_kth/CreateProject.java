@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +17,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import nu.geeks.uio_kth.Database.ProjectDbHelper;
 
 public class CreateProject extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
@@ -37,6 +38,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         setContentView(R.layout.activity_create_project);
 
         Typeface caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
+        Typeface icons = Typeface.createFromAsset(getAssets(), "Hipster Icons.ttf");
 
         etPassword = (EditText) findViewById(R.id.etPassword);
         etProjectName = (EditText) findViewById(R.id.etProjectName);
@@ -55,16 +57,24 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         bView= (Button) findViewById(R.id.bCancel);
         bView.setOnClickListener(this);
 
-        //TODO - implement spinner
-        spinnerArray.add("A");
-        spinnerArray.add("B");
+        //Add A-Z and a-z to array.
+        for(int i = 65; i < 91; i++){
+            spinnerArray.add("" + (char) i);
+        }
+        for(int i = 98; i < 123; i++){
+            spinnerArray.add("" + (char) i);
+        }
+
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(
                 this,android.R.layout.simple_spinner_item,spinnerArray
         );
+
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         iconSpinner = (Spinner) findViewById(R.id.iconSpinner);
+        iconSpinner.setAdapter(spinnerAdapter);
         iconSpinner.setOnItemSelectedListener(this);
+
     }
 
     @Override

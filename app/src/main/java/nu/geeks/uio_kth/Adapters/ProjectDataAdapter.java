@@ -1,4 +1,4 @@
-package nu.geeks.uio_kth;
+package nu.geeks.uio_kth.Adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import nu.geeks.uio_kth.Database.DataProvider;
+import nu.geeks.uio_kth.R;
 
 /**
  * Created by Micke on 2016-02-17.

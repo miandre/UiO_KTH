@@ -1,16 +1,11 @@
-package nu.geeks.uio_kth;
+package nu.geeks.uio_kth.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import org.w3c.dom.UserDataHandler;
-
-import java.util.Random;
 
 /**
  * Created by Micke on 2016-02-17.

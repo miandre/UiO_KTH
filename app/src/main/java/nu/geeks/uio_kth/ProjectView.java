@@ -16,6 +16,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import nu.geeks.uio_kth.Adapters.ProjectDataAdapter;
+import nu.geeks.uio_kth.Database.DataProvider;
+import nu.geeks.uio_kth.Database.ProjectDbHelper;
+
 
 /**
  * Created by Micke on 2016-02-17.
@@ -82,6 +86,7 @@ public class ProjectView extends Activity implements View.OnClickListener {
         }
         projectDataAdapter.notifyDataSetChanged();
     }
+
 
     @Override
     public void onClick(View v) {

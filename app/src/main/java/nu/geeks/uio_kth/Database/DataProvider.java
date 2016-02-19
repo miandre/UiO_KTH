@@ -1,4 +1,4 @@
-package nu.geeks.uio_kth;
+package nu.geeks.uio_kth.Database;
 
 public class DataProvider  {
 
