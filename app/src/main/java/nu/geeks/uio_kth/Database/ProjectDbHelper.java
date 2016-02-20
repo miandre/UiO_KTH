@@ -11,23 +11,27 @@ import android.util.Log;
  * Created by Micke on 2016-02-17.
  */
 public class ProjectDbHelper extends SQLiteOpenHelper {
+    private static final String TAG = "DATABASE OPERATIONS";
+
     private static final String DATABASE_NAME = "PROJECTS.DB";
     private static final int DATABASE_VERSION = 1;
+
     private static final String CREATE_QUERY = "CREATE TABLE "+ProjectProperties.NewProjectData.TABLE_NAME+
             " ("+ProjectProperties.NewProjectData.PROJECT_NAME+" TEXT,"+ ProjectProperties.NewProjectData.PROJECT_PASSWORD+
             " TEXT,"+ProjectProperties.NewProjectData.PROJECT_ID+" TEXT,"+ ProjectProperties.NewProjectData.PROJECT_ICON+" TEXT);";
 
+
     public ProjectDbHelper(Context context){
 
         super(context, DATABASE_NAME,null,DATABASE_VERSION);
-        Log.e("DATABASE OPERATIONS", "Database created/opened");
+        Log.e(TAG, "Database created/opened, query: " + CREATE_QUERY);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        //This is never used?
         db.execSQL(CREATE_QUERY);
-        Log.e("DATABASE OPERATIONS", "Table created");
+        Log.e(TAG, "Table created, query: ´" + CREATE_QUERY);
     }
 
     public void addProjectData(String projectName, String projectPassword, String projectIcon, SQLiteDatabase db){
@@ -40,7 +44,7 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_ICON,projectIcon);
         db.insert(ProjectProperties.NewProjectData.TABLE_NAME, null, contentValues);
 
-        Log.e("DATABASE OPERATIONS", "New Project Added");
+        Log.e(TAG, "New Project Added");
     }
 
     public Cursor getProjects(SQLiteDatabase db){
@@ -70,7 +74,7 @@ private String generateProjectId(){
         ret.append(appender);
         else i--;
     }
-    Log.e("Generated ID",ret.toString());
+    Log.e(TAG,"Generated ID" + ret.toString());
     return ret.toString();
 }
 

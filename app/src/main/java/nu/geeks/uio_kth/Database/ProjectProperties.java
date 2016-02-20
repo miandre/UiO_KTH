@@ -13,4 +13,11 @@ public class ProjectProperties {
         public static final String TABLE_NAME = "current_projects";
     }
 
+    public static abstract class NewTransactionData{
+        public static final String PROJECT_ID = "project_id";
+        public static final String TABLE_NAME = "transactions";
+        public static final String PERSON = "person";
+        public static final String amount = "amount";
+    }
+
 }

@@ -42,7 +42,6 @@ public class ProjectView extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_view);
 
-        Typeface tower = Typeface.createFromAsset(getAssets(),"HTOWERT.TTF");
         Typeface caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
 
         bNewProject = (Button) findViewById(R.id.bNewProject);
@@ -55,7 +54,12 @@ public class ProjectView extends Activity implements View.OnClickListener {
         listView.setAdapter(projectDataAdapter);
 
         registerForContextMenu(listView);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startProjectContentView(position);
+            }
+        });
 
         projectDbHelper = new ProjectDbHelper(getApplicationContext());
         sqLiteDatabase = projectDbHelper.getReadableDatabase();
@@ -64,6 +68,17 @@ public class ProjectView extends Activity implements View.OnClickListener {
 
 
 
+    }
+
+    private void startProjectContentView(int position){
+
+        //Get the project ID.
+        cursor.moveToPosition(position);
+        String id = cursor.getString(2);
+
+        Intent intent = new Intent(this,ProjectContentView.class);
+        intent.putExtra("project_id", position);
+        startActivity(intent);
     }
 
     private void updateListview(ProjectDbHelper projectDbHelper, SQLiteDatabase sqLiteDatabase, Cursor cursor) {
@@ -113,7 +128,6 @@ public class ProjectView extends Activity implements View.OnClickListener {
     public void onBackPressed() {
         super.onBackPressed();
         System.exit(0);
-
     }
 
     @Override
