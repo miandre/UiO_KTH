@@ -18,6 +18,7 @@ public class ProjectProperties {
         public static final String TABLE_NAME = "transactions";
         public static final String PERSON = "person";
         public static final String amount = "amount";
+        public static final String object = "object";
     }
 
 }
