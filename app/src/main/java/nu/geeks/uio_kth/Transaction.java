@@ -6,13 +6,13 @@ package nu.geeks.uio_kth;
 public class Transaction {
 
     public String projectId;
-    public int amount;
+    public float amount;
     public String person;
     public String object;
 
-    public Transaction(String projectId, String amount, String person, String object){
+    public Transaction(String projectId, String person, String amount, String object){
         this.projectId = projectId;
-        this.amount = Integer.parseInt(amount);
+        this.amount = Float.parseFloat(amount);
         this.person = person;
         this.object = object;
     }

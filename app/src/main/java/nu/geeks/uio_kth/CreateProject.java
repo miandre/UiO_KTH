@@ -102,7 +102,9 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         String projectIcon = spinnerArray.get(spinnerIndex);
         projectDbHelper = new ProjectDbHelper(context);
         sqLiteDatabase = projectDbHelper.getWritableDatabase();
+
         projectDbHelper.addProjectData(projectName,projectPassword, projectIcon,sqLiteDatabase);
+
         Toast.makeText(getBaseContext(),"Project Saved",Toast.LENGTH_SHORT).show();
         projectDbHelper.close();
     }
