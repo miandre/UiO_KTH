@@ -107,7 +107,6 @@ public class ProjectView extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Cursor cursor;
         switch (v.getId()) {
             case R.id.bNewProject:
                 startActivity(new Intent(this, CreateProject.class));

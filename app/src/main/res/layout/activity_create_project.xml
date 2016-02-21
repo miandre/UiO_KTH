@@ -92,7 +92,8 @@
         android:id="@+id/iconSpinner"
         android:spinnerMode="dialog"
         android:focusable="true"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -28,8 +28,9 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView view = (TextView) super.getView(position, convertView, parent);
         view.setTypeface(icons);
-        view.setTextSize(80);
-        view.setTextColor(Color.BLACK);
+        //view.setTextSize(80);
+        //view.setTextColor(Color.BLACK);
+        //view.setBackgroundColor(Color.argb(1,0,0,0));
         return view;
     }
 

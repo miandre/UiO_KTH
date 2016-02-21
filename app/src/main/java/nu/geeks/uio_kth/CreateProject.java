@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -72,7 +71,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(
                 getApplicationContext(),
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.project_icon_spinner_item,
                 spinnerArray
         );
 
