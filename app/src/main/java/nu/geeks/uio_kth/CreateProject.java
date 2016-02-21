@@ -1,11 +1,14 @@
 package nu.geeks.uio_kth;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,7 +26,7 @@ import nu.geeks.uio_kth.Database.ProjectDbHelper;
 public class CreateProject extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
-    Button bCreate,bView;
+    Button bCreate,bView,bShare;
     EditText etPassword, etProjectName;
     TextView tv_create_project,tv_create_name,tv_create_password, tv_set_icon;
     Context context;
@@ -32,13 +35,14 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
     Spinner iconSpinner;
     int spinnerIndex=0;
     List<String> spinnerArray = new ArrayList<String>();
+    Typeface caviarBold;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_project);
 
-        Typeface caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
+       caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
 
 
         etPassword = (EditText) findViewById(R.id.etPassword);
@@ -56,6 +60,9 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
         bCreate = (Button) findViewById(R.id.bCreate);
         bCreate.setOnClickListener(this);
+
+        bShare = (Button) findViewById(R.id.bShare);
+        bShare.setOnClickListener(this);
 
         bView= (Button) findViewById(R.id.bCancel);
         bView.setOnClickListener(this);
@@ -90,9 +97,37 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
                 break;
             case R.id.bCancel:
             viewProjects();
+                break;
+            case R.id.bShare:
+                openShareView();
+                break;
         }
 
     }
+
+
+    public void openShareView(){
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.share_view, null);
+        final AlertDialog builder = new AlertDialog.Builder(this).create();
+        builder.setView(dialogLayout);
+
+        Button ok = (Button) dialogLayout.findViewById(R.id.bDoneShare);
+        TextView text = (TextView)dialogLayout.findViewById(R.id.tv_share_text);
+        text.setTypeface(caviarBold);
+        text.setTextColor(Color.WHITE);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+
+        builder.show();
+
+    }
+
 
     public void addProject(View view){
 

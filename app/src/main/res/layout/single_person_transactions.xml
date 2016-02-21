@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg2">
+    android:background="@drawable/popup_bg">
 
     <TextView
         android:layout_width="wrap_content"
@@ -10,6 +10,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="---"
         android:id="@+id/tv_single_person_transactions"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"
         android:layout_gravity="center_horizontal" />
 
     <Button

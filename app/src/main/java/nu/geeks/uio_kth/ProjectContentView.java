@@ -49,7 +49,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
 
     ListView listView;
-    Button add_transaction;
+    Button add_transaction, bShare;
     Typeface caviarBold;
 
 
@@ -87,6 +87,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         add_transaction = (Button) findViewById(R.id.bt_add_trans);
         add_transaction.setOnClickListener(this);
+
+        bShare = (Button) findViewById(R.id.bShare2);
+        bShare.setOnClickListener(this);
 
     }
 
@@ -273,11 +276,37 @@ public class ProjectContentView extends Activity implements View.OnClickListener
                 builder.show();
                 break;
 
+            case R.id.bShare2:
+                openShareView();
+                break;
+
         }
     }
 
+    public void openShareView(){
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.share_view, null);
+        final AlertDialog builder = new AlertDialog.Builder(this).create();
+        builder.setView(dialogLayout);
+
+        Button ok = (Button) dialogLayout.findViewById(R.id.bDoneShare);
+        TextView text = (TextView)dialogLayout.findViewById(R.id.tv_share_text);
+        text.setTypeface(caviarBold);
+        text.setTextColor(Color.WHITE);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+
+        builder.show();
+
+    }
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         String name = persons.get(position).name;
         String msg = name + "'s all transactions:\n";

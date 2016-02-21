@@ -1,13 +1,16 @@
 package nu.geeks.uio_kth;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +38,7 @@ public class ProjectView extends Activity implements View.OnClickListener {
     ProjectDataAdapter projectDataAdapter;
     Button bNewProject;
     TextView tv_current_projects;
+    Typeface caviarBold;
 
 
     @Override
@@ -42,7 +46,7 @@ public class ProjectView extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_view);
 
-        Typeface caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
+        caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
 
         bNewProject = (Button) findViewById(R.id.bNewProject);
         bNewProject.setOnClickListener(this);
@@ -112,8 +116,11 @@ public class ProjectView extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, CreateProject.class));
                 finish();
                 break;
+
         }
     }
+
+
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
