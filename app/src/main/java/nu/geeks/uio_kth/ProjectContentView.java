@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -205,6 +206,16 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         personArrayAdapter.notifyDataSetChanged();
     }
 
+    public String[] getNameList(){
+        String[] names = new String[persons.size()];
+        int i = 0;
+        for(Person p : persons){
+            names[i]= p.name;
+            i++;
+        }
+        return names;
+    }
+
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -217,10 +228,23 @@ public class ProjectContentView extends Activity implements View.OnClickListener
                 //Initialize buttons end edittexts.
                 Button ok = (Button) dialogLayout.findViewById(R.id.bt_ok_add_trans);
                 Button cancel = (Button) dialogLayout.findViewById(R.id.bt_cancel_trans);
-                final EditText add_trans_object, add_trans_amount, add_trans_by_who;
-                add_trans_by_who = (EditText) dialogLayout.findViewById(R.id.et_by_who);
+                String[] names = getNameList();
+                final EditText add_trans_object, add_trans_amount;
+                final AutoCompleteTextView add_trans_by_who;
+                final ArrayAdapter<String> personAutoAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
+
+                add_trans_by_who = (AutoCompleteTextView) dialogLayout.findViewById(R.id.et_by_who);
                 add_trans_object = (EditText) dialogLayout.findViewById(R.id.et_object);
                 add_trans_amount = (EditText) dialogLayout.findViewById(R.id.et_amount);
+                add_trans_by_who.setAdapter(personAutoAdapter);
+                add_trans_by_who.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        add_trans_by_who.showDropDown();
+                    }
+                });
+                add_trans_by_who.setThreshold(1);
+
 
                 ok.setOnClickListener(new View.OnClickListener() {
                     @Override
