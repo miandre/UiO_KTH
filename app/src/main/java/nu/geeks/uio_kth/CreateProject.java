@@ -34,7 +34,6 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
     Button bCreate,bView,bShare;
     EditText etPassword, etProjectName;
     TextView tv_create_project,tv_create_name,tv_create_password, tv_set_icon;
-    Context context;
     ProjectDbHelper projectDbHelper;
     SQLiteDatabase sqLiteDatabase;
     Spinner iconSpinner;
@@ -52,6 +51,8 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
         etPassword = (EditText) findViewById(R.id.etPassword);
 
+
+        // text removed on focus
         etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             public void onFocusChange(View v, boolean hasFocus){
                 if (hasFocus){
@@ -62,6 +63,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
             }
         });
 
+        // text removed on focus
         etProjectName = (EditText) findViewById(R.id.etProjectName);
         etProjectName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             public void onFocusChange(View v, boolean hasFocus){
@@ -71,26 +73,32 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
             }
         });
 
+        // linking with view
         tv_create_project = (TextView) findViewById(R.id.tv_create_project);
         tv_create_name = (TextView) findViewById(R.id.tv_create_name);
         tv_create_password = (TextView) findViewById(R.id.tv_create_password);
         tv_set_icon = (TextView) findViewById(R.id.tv_set_icon);
 
+        // fonts
         tv_set_icon.setTypeface(caviarBold);
         tv_create_project.setTypeface(caviarBold);
         tv_create_name.setTypeface(caviarBold);
         tv_create_password.setTypeface(caviarBold);
 
+        // link button with view and set listener
         bCreate = (Button) findViewById(R.id.bCreate);
         bCreate.setOnClickListener(this);
 
+        // link button with view and set listener
         bShare = (Button) findViewById(R.id.bShare);
         bShare.setOnClickListener(this);
 
+        // link button with view and set listener
         bView= (Button) findViewById(R.id.bCancel);
         bView.setOnClickListener(this);
 
         //Add A-Z and a-z to array.
+        // icons
         for(int i = 65; i < 91; i++){
             spinnerArray.add("" + (char) i);
         }
@@ -98,7 +106,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
             spinnerArray.add("" + (char) i);
         }
 
-
+        // spinner list of icons
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(
                 getApplicationContext(),
                 R.layout.project_icon_spinner_item,
@@ -115,7 +123,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.bCreate:
-                addProject(v);
+                addProject();
                 viewProjects();
                 break;
             case R.id.bCancel:
@@ -128,11 +136,11 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
     }
 
-
     public void openShareView(){
-
+        // get XML for share view
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.share_view, null);
+        // present as alert
         final AlertDialog builder = new AlertDialog.Builder(this).create();
         builder.setView(dialogLayout);
 
@@ -152,16 +160,16 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
     }
 
 
-    public void addProject(View view){
+    public void addProject(){
 
-        context = this;
         String projectName = etProjectName.getText().toString();
         String projectPassword = etPassword.getText().toString();
         String projectIcon = spinnerArray.get(spinnerIndex);
-        projectDbHelper = new ProjectDbHelper(context);
+        projectDbHelper = new ProjectDbHelper(this);
         sqLiteDatabase = projectDbHelper.getWritableDatabase();
 
         projectDbHelper.addProjectData(projectName,projectPassword, projectIcon,sqLiteDatabase);
+
 
         Toast.makeText(getBaseContext(),"Project Saved",Toast.LENGTH_SHORT).show();
         projectDbHelper.close();
@@ -173,6 +181,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         finish();
     }
 
+    // icon selection
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         spinnerIndex=position;
