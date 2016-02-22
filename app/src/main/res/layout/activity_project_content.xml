@@ -65,19 +65,20 @@
             android:background="@drawable/share" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button2"
+            android:layout_width="89dp"
+            android:layout_height="76dp"
+            android:id="@+id/bt_calculate"
             android:layout_alignTop="@+id/bShare2"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/calculate" />
 
         <Button
             android:layout_width="89dp"
             android:layout_height="76dp"
             android:id="@+id/bt_add_trans"
+            android:background="@drawable/add"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/add" />
+            android:layout_toEndOf="@+id/bShare2"
+            android:layout_marginLeft="50dp" />
     </RelativeLayout>
 </LinearLayout>

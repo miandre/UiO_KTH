@@ -118,10 +118,10 @@
             android:layout_width="89dp"
             android:layout_height="76dp"
             android:id="@+id/bShare"
-            android:layout_alignBottom="@+id/bCreate"
-            android:layout_marginStart="20dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/share" />
+            android:background="@drawable/share"
+            android:layout_alignTop="@+id/bCreate"
+            android:layout_toEndOf="@+id/bCreate"
+            android:layout_marginLeft="30dp" />
 
         <Button
             android:layout_width="89dp"
