@@ -71,7 +71,7 @@ private String generateProjectId(){
     for(int i = 0; i<length; i++){
         char appender =(char)((Math.random()*System.currentTimeMillis()%57)+65);
         if (appender>96||appender<91)
-        ret.append(appender);
+            ret.append(appender);
         else i--;
     }
     Log.e(TAG,"Generated ID" + ret.toString());

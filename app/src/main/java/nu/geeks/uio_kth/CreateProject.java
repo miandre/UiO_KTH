@@ -23,6 +23,11 @@ import java.util.List;
 import nu.geeks.uio_kth.Adapters.SpinnerAdapter;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
 
+/**
+ * The create-project-view.
+ *
+ */
+
 public class CreateProject extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
@@ -46,15 +51,17 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
 
         etPassword = (EditText) findViewById(R.id.etPassword);
+
         etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             public void onFocusChange(View v, boolean hasFocus){
                 if (hasFocus){
                 etPassword.setHint("");
-                etPassword.getShowSoftInputOnFocus();}
+                }
                 else etPassword.setHint("*******");
 
             }
         });
+
         etProjectName = (EditText) findViewById(R.id.etProjectName);
         etProjectName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             public void onFocusChange(View v, boolean hasFocus){

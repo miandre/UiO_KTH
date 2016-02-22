@@ -25,39 +25,49 @@ import nu.geeks.uio_kth.Database.ProjectDbHelper;
 
 
 /**
+ * This is the main acitivity for the application, the starting view with all the projects.
+ *
  * Created by Micke on 2016-02-17.
  */
 
 
 public class ProjectView extends Activity implements View.OnClickListener {
 
-    ListView listView;
-    SQLiteDatabase sqLiteDatabase;
-    ProjectDbHelper projectDbHelper;
-    Cursor cursor;
-    ProjectDataAdapter projectDataAdapter;
-    Button bNewProject;
-    TextView tv_current_projects;
-    Typeface caviarBold;
+    ListView listView;                      //The listview for the projects
+    SQLiteDatabase sqLiteDatabase;          //The database with the projects (Note that there are two different databases)
+    ProjectDbHelper projectDbHelper;        //Used to communicate with the database
+    Cursor cursor;                          //Used as a pointer, points to a field in the database.
+    ProjectDataAdapter projectDataAdapter;  //An adapter to handle communication with the list view and the content of the list.
+    Button bNewProject;                     //The new-project-button
+    TextView tv_current_projects;           //The static text at the top of the screen
+    Typeface caviarBold;                    //Typsnittet som används.
 
-
+    /**
+     * Called by Android, instanziate all stuff.
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_view);
+
+        super.onCreate(savedInstanceState);                 //Always call super.
+        setContentView(R.layout.activity_project_view);     //the layout (the xml in res/layout)
 
         caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
 
+        //Connect the button and the text in the xml.
         bNewProject = (Button) findViewById(R.id.bNewProject);
-        bNewProject.setOnClickListener(this);
+        bNewProject.setOnClickListener(this);   //Set the onClickListener, which is implemented in thiss class.
         tv_current_projects = (TextView) findViewById(R.id.tv_current_projects);
         tv_current_projects.setTypeface(caviarBold);
 
         listView = (ListView) findViewById(R.id.project_view);
+
         projectDataAdapter = new ProjectDataAdapter(getApplicationContext(), R.layout.list_item);
-        listView.setAdapter(projectDataAdapter);
+        listView.setAdapter(projectDataAdapter);    //Connect listview to the adapter
 
         registerForContextMenu(listView);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -66,29 +76,45 @@ public class ProjectView extends Activity implements View.OnClickListener {
         });
 
         projectDbHelper = new ProjectDbHelper(getApplicationContext());
+
         sqLiteDatabase = projectDbHelper.getReadableDatabase();
         cursor = projectDbHelper.getProjects(sqLiteDatabase);
+
         updateListview(projectDbHelper,sqLiteDatabase,cursor);
 
 
 
     }
 
+    /**
+     * Starts the next view, when you have pressed a project in the list.
+     *
+     *
+     * @param position position in the list
+     */
     private void startProjectContentView(int position){
 
         //Get the project ID.
         cursor.moveToPosition(position);
-        String id = cursor.getString(2);
+        String id = cursor.getString(2); //Id
 
         Intent intent = new Intent(this,ProjectContentView.class);
         intent.putExtra("project_id", position);
         startActivity(intent);
     }
 
+    /**
+     * reads from the database, updates the adapter and the listview.
+     *
+     * @param projectDbHelper
+     * @param sqLiteDatabase
+     * @param cursor
+     */
     private void updateListview(ProjectDbHelper projectDbHelper, SQLiteDatabase sqLiteDatabase, Cursor cursor) {
 
         projectDataAdapter.clear();
         projectDataAdapter.notifyDataSetChanged();
+
         sqLiteDatabase = projectDbHelper.getReadableDatabase();
         cursor = projectDbHelper.getProjects(sqLiteDatabase);
 
@@ -105,10 +131,15 @@ public class ProjectView extends Activity implements View.OnClickListener {
 
             } while (cursor.moveToNext());
         }
+
         projectDataAdapter.notifyDataSetChanged();
     }
 
 
+    /**
+     * Handles only the click of the new-project-button
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -116,7 +147,6 @@ public class ProjectView extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, CreateProject.class));
                 finish();
                 break;
-
         }
     }
 
