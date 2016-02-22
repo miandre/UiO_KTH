@@ -17,7 +17,8 @@
         </activity>
         <activity
             android:name=".CreateProject"
-            android:label="Create New Project"></activity>
+            android:label="Create New Project"
+            android:windowSoftInputMode="stateVisible"></activity>
         <activity
             android:name=".ProjectContentView"
             android:label="Project Content View"></activity>

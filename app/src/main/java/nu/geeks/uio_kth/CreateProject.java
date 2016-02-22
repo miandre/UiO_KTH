@@ -49,8 +49,8 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             public void onFocusChange(View v, boolean hasFocus){
                 if (hasFocus){
-                etPassword.setHint("");}
-               // etPassword.getShowSoftInputOnFocus();}
+                etPassword.setHint("");
+                etPassword.getShowSoftInputOnFocus();}
                 else etPassword.setHint("*******");
 
             }
