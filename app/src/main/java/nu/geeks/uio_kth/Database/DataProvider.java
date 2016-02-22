@@ -1,5 +1,6 @@
 package nu.geeks.uio_kth.Database;
 
+// DTO for project data
 public class DataProvider  {
 
     private String projectName;

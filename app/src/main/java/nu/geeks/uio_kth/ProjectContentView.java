@@ -62,16 +62,17 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         setContentView(R.layout.activity_project_content);
 
-        //Get the extras that contain the id from the main screen.
+        //Get the extras that contain the id (actually cursor position) from the main screen.
         Bundle b = getIntent().getExtras();
         projectPosition = b.getInt("project_id");
 
         projectNameString = getName(projectPosition);
 
-        caviarBold = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
-
         projectName = (TextView) findViewById(R.id.tvProjectName); //Lol naming convention.
         totalExpenses = (TextView) findViewById(R.id.tv_total_expences);
+
+        // font
+        caviarBold = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
         totalExpenses.setTypeface(caviarBold);
         totalExpenses.setTextColor(Color.WHITE);
 
@@ -93,6 +94,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
     }
 
+    // expenses list (totals)
     private void setListView() {
         listView = (ListView) findViewById(R.id.lv_persons);
 
@@ -156,6 +158,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
 
 
+    // read the expenses
     private void readTransactions(){
 
         transactionsDbHelper = new TransactionsDbHelper(this);
@@ -198,7 +201,8 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         update();
     }
 
-
+    // recount total expenses (all people), make sure listview is up to date
+    // called when adding expenses and when initializing the activity
     private void update(){
 
         float total = 0;
@@ -223,6 +227,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.bt_add_trans:
+                // make popup view
                 LayoutInflater inflater = getLayoutInflater();
                 View dialogLayout = inflater.inflate(R.layout.add_transaction, null);
                 final AlertDialog builder = new AlertDialog.Builder(this).create();
@@ -239,6 +244,8 @@ public class ProjectContentView extends Activity implements View.OnClickListener
                 add_trans_by_who = (AutoCompleteTextView) dialogLayout.findViewById(R.id.et_by_who);
                 add_trans_object = (EditText) dialogLayout.findViewById(R.id.et_object);
                 add_trans_amount = (EditText) dialogLayout.findViewById(R.id.et_amount);
+
+                // auto completion
                 add_trans_by_who.setAdapter(personAutoAdapter);
                 add_trans_by_who.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -252,14 +259,18 @@ public class ProjectContentView extends Activity implements View.OnClickListener
                 ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        // get text fields
                         String amount = add_trans_amount.getText().toString();
                         String object = add_trans_object.getText().toString();
                         String byWho = add_trans_by_who.getText().toString();
+
+                        // verify not empty
                         if (amount.equals("") || object.equals("") || byWho.equals("")){
                             Toast.makeText(getApplicationContext(), "You have to add something", Toast.LENGTH_LONG).show();
                             Log.e(TAG, "okButton failed");
                         }else{
                             Log.e(TAG, "okButton OK");
+                            // add expense
                             addTransaction(amount, object, byWho);
                             builder.dismiss();
                         }
@@ -283,7 +294,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         }
     }
 
-    public void openShareView(){
+    public void openShareView(){ // duplicated?
 
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.share_view, null);
@@ -306,6 +317,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     }
 
     @Override
+    // list for one persons expenses
        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         String name = persons.get(position).name;
@@ -318,6 +330,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
             }
         }
 
+        // open as popup
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.single_person_transactions, null);
         final AlertDialog builder = new AlertDialog.Builder(this).create();

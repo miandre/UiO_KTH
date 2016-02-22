@@ -16,6 +16,7 @@ import nu.geeks.uio_kth.R;
 
 /**
  * Created by Micke on 2016-02-17.
+ * For each list item in project list.
  */
 public class ProjectDataAdapter extends ArrayAdapter {
 
@@ -57,9 +58,11 @@ public class ProjectDataAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         LayoutHandler layoutHandler;
+        // fonts
         Typeface caviarDreams = Typeface.createFromAsset(this.getContext().getAssets(),"CaviarDreams.ttf");
         Typeface tower = Typeface.createFromAsset(this.getContext().getAssets(),"HTOWERT.TTF");
         Typeface icons = Typeface.createFromAsset(this.getContext().getAssets(),"icons3.ttf");
+
         if(row == null){
             LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = layoutInflater.inflate(R.layout.list_item,parent,false);
