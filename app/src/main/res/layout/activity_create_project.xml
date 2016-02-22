@@ -43,7 +43,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etProjectName"
-        android:hint="Project Name" />
+        android:hint="Project Name"
+        android:cursorVisible="true"
+        android:textCursorDrawable="@null"
+
+        />
 
     <TextView
         android:layout_width="wrap_content"

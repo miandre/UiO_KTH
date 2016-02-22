@@ -46,7 +46,23 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
 
         etPassword = (EditText) findViewById(R.id.etPassword);
+        etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            public void onFocusChange(View v, boolean hasFocus){
+                if (hasFocus){
+                etPassword.setHint("");}
+               // etPassword.getShowSoftInputOnFocus();}
+                else etPassword.setHint("*******");
+
+            }
+        });
         etProjectName = (EditText) findViewById(R.id.etProjectName);
+        etProjectName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            public void onFocusChange(View v, boolean hasFocus){
+                if (hasFocus)
+                etProjectName.setHint("");
+                else etProjectName.setHint("Project Name");
+            }
+        });
 
         tv_create_project = (TextView) findViewById(R.id.tv_create_project);
         tv_create_name = (TextView) findViewById(R.id.tv_create_name);
