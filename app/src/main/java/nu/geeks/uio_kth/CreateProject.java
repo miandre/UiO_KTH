@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,8 +22,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.geeks.uio_kth.Adapters.ProjectDataAdapter;
 import nu.geeks.uio_kth.Adapters.SpinnerAdapter;
+import nu.geeks.uio_kth.Database.DataProvider;
+import nu.geeks.uio_kth.Database.GetProjectCallback;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
+import nu.geeks.uio_kth.Database.ServerRequest;
 
 /**
  * The create-project-view.
@@ -40,6 +46,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
     int spinnerIndex=0;
     List<String> spinnerArray = new ArrayList<String>();
     Typeface caviarBold;
+    static final String TAG = "CreateProject";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,18 +168,33 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
 
     public void addProject(){
+        DataProvider dataProvider = new DataProvider();
 
-        String projectName = etProjectName.getText().toString();
-        String projectPassword = etPassword.getText().toString();
-        String projectIcon = spinnerArray.get(spinnerIndex);
+        dataProvider.setProjectName(etProjectName.getText().toString());
+        dataProvider.setProjectPassword(etPassword.getText().toString());
+        dataProvider.setProjectIcon(spinnerArray.get(spinnerIndex));
         projectDbHelper = new ProjectDbHelper(this);
         sqLiteDatabase = projectDbHelper.getWritableDatabase();
 
-        projectDbHelper.addProjectData(projectName,projectPassword, projectIcon,sqLiteDatabase);
+        projectDbHelper.addProjectData(dataProvider, sqLiteDatabase);
+        Cursor cursor = projectDbHelper.getProjects(sqLiteDatabase);
+        cursor.moveToLast();
+        final int pos = cursor.getPosition();
+        Log.e(TAG, "Cursor pos: " + pos);
 
-
-        Toast.makeText(getBaseContext(),"Project Saved",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),"Project Saved",Toast.LENGTH_SHORT).show();
         projectDbHelper.close();
+        ServerRequest serverRequest = new ServerRequest(this);
+        serverRequest.storeProjectDataInBackground(dataProvider, new GetProjectCallback() {
+            @Override
+            public void done(int projectPosition) {
+                projectPosition=pos;
+                Intent intent = new Intent(CreateProject.this,ProjectContentView.class);
+                intent.putExtra("project_id", projectPosition);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void viewProjects(){

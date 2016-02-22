@@ -34,17 +34,20 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
         Log.e(TAG, "Table created, query: ´" + CREATE_QUERY);
     }
 
-    public void addProjectData(String projectName, String projectPassword, String projectIcon, SQLiteDatabase db){
+    public void addProjectData(DataProvider dataProvider, SQLiteDatabase db){
 
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(ProjectProperties.NewProjectData.PROJECT_NAME,projectName);
-        contentValues.put(ProjectProperties.NewProjectData.PROJECT_PASSWORD,projectPassword);
-        contentValues.put(ProjectProperties.NewProjectData.PROJECT_ID,generateProjectId());
-        contentValues.put(ProjectProperties.NewProjectData.PROJECT_ICON,projectIcon);
+
+        dataProvider.setProjectId(generateProjectId());
+        contentValues.put(ProjectProperties.NewProjectData.PROJECT_NAME,dataProvider.getProjectName());
+        contentValues.put(ProjectProperties.NewProjectData.PROJECT_PASSWORD,dataProvider.getProjectPassword());
+        contentValues.put(ProjectProperties.NewProjectData.PROJECT_ID,dataProvider.getProjectId());
+        contentValues.put(ProjectProperties.NewProjectData.PROJECT_ICON, dataProvider.getProjectIcon());
         db.insert(ProjectProperties.NewProjectData.TABLE_NAME, null, contentValues);
 
-        Log.e(TAG, "New Project Added");
+
+        Log.e(TAG, "New Project Added: "+contentValues.getAsString(ProjectProperties.NewProjectData.PROJECT_NAME));
     }
 
     public Cursor getProjects(SQLiteDatabase db){

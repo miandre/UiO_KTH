@@ -7,6 +7,10 @@ public class DataProvider  {
     private String projectId;
     private String projectIcon;
 
+    public DataProvider() {
+
+    }
+
     public DataProvider(String projectName, String projectPassword, String projectId, String projectIcon) {
         this.projectName = projectName;
         this.projectPassword = projectPassword;
