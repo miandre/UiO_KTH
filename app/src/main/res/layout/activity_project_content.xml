@@ -79,6 +79,6 @@
             android:background="@drawable/add"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/bShare2"
-            android:layout_marginLeft="50dp" />
+            android:layout_marginLeft="40dp" />
     </RelativeLayout>
 </LinearLayout>
