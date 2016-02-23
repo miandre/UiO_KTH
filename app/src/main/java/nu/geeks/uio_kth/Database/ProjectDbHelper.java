@@ -42,8 +42,8 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
 
         if (dataProvider.getProjectId()==null){
             projectId = generateProjectId();
-            Log.e(TAG,dataProvider.getProjectId());
             dataProvider.setProjectId(projectId);
+            Log.e(TAG, dataProvider.getProjectId());
         }else projectId=dataProvider.getProjectId();
 
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_NAME,dataProvider.getProjectName());
