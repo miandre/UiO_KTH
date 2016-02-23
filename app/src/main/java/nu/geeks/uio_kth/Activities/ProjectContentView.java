@@ -27,6 +27,7 @@ import nu.geeks.uio_kth.Database.GetProjectCallback;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
 import nu.geeks.uio_kth.Database.ServerRequest;
 import nu.geeks.uio_kth.Database.TransactionsDbHelper;
+import nu.geeks.uio_kth.Objects.DataProvider;
 import nu.geeks.uio_kth.Objects.Person;
 import nu.geeks.uio_kth.R;
 import nu.geeks.uio_kth.Objects.Transaction;
@@ -210,6 +211,11 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         serverRequest.storeTransactionDataInBackground(transaction, new GetProjectCallback() {
             @Override
             public void done(int projectPosition) {
+
+            }
+
+            @Override
+            public void done(DataProvider projectToAdd) {
 
             }
         });

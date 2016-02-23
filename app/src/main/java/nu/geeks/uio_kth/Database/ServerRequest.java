@@ -12,6 +12,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -21,6 +23,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -57,13 +61,13 @@ public class ServerRequest {
 
     }
 
-/*
-    public void fetchUserDataInBackground(DataProvider dataProvider, GetProjectCallback projectCallback){
+
+    public void fetchProjectDataInBackground(String project_id, GetProjectCallback projectCallback){
         progressDialog.show();
-        new fetchUserDataAsyncTask(dataProvider, projectCallback).execute();
+        new fetchProjectDataAsyncTask(project_id, projectCallback).execute();
 
     }
-*/
+
 
 
 
@@ -174,50 +178,53 @@ public class ServerRequest {
     }
 
 
-/*    public class fetchUserDataAsyncTask extends AsyncTask<Void, Void, User> {
-        User user;
-        GetUserCallback userCallback;
+    public class fetchProjectDataAsyncTask extends AsyncTask<Void, Void, DataProvider> {
+        String project_id;
+        GetProjectCallback projectCallback;
 
-        public fetchUserDataAsyncTask(User user, GetUserCallback userCallback) {
-            this.userCallback = userCallback;
-            this.user = user;
+        public fetchProjectDataAsyncTask(String project_id, GetProjectCallback projectCallback) {
+            this.projectCallback = projectCallback;
+            this.project_id = project_id;
 
         }
 
         @Override
-        protected User doInBackground(Void... params) {
+        protected DataProvider doInBackground(Void... params) {
 
             ArrayList<NameValuePair> dataToSend = new ArrayList<>();
-            dataToSend.add(new BasicNameValuePair("username", user.username));
-            dataToSend.add(new BasicNameValuePair("password", user.password));
-            Log.d("sending username: ", user.username);
-            Log.d("sending password: ", user.password);
+            dataToSend.add(new BasicNameValuePair("project_id", project_id));
+            Log.e("sending project ID: ", project_id);
+
 
             HttpParams httpRequestParams = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
             HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost(SERVER_ADDRESS + "FetchUserData.php");
+            HttpPost post = new HttpPost(SERVER_ADDRESS + "FetchProjectData.php");
 
-            User returnedUser = null;
+            DataProvider projectToAdd = null;
             try {
                 post.setEntity(new UrlEncodedFormEntity(dataToSend));
                 HttpResponse httpResponse = client.execute(post);
 
                 HttpEntity entity = httpResponse.getEntity();
                 String result = EntityUtils.toString(entity);
-                Log.d("jsonAnswer: ", result);
+                Log.e("jsonAnswer: ", result);
 
                 JSONObject jsonObject = new JSONObject(result);
 
                 if (jsonObject.has("fail")){
-                    //if (false) {
-                    returnedUser = null;
+                    Log.e(TAG,"jsonFail");
+                    projectToAdd = null;
                 } else {
-                    String name = jsonObject.getString("name");
-                    int age = jsonObject.getInt("age");
-                    returnedUser = new User(name, user.username, user.password, age);
+                    String project_name = jsonObject.getString("name");
+                    String project_id = jsonObject.getString("project_id");
+                    String project_password = jsonObject.getString("password");
+                    String project_icon = jsonObject.getString("icon");
+                    //String project_currency = jsonObject.getString("currency");
+                    projectToAdd = new DataProvider(project_name,project_password,project_id,project_icon);
+                    Log.e(TAG,"Created projectToAdd");
                 }
 
             } catch (Exception e) {
@@ -226,16 +233,16 @@ public class ServerRequest {
             }
 
 
-            return returnedUser;
+            return projectToAdd;
         }
 
         @Override
-        protected void onPostExecute(DataProvider dataProvider) {
+        protected void onPostExecute(DataProvider projectToAdd) {
             progressDialog.dismiss();
-            userCallback.done(0);
-            super.onPostExecute(data);
+            projectCallback.done(projectToAdd);
+            super.onPostExecute(projectToAdd);
         }
 
-    }*/
+    }
 }
 

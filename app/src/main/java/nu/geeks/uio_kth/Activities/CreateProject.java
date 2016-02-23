@@ -1,12 +1,15 @@
 package nu.geeks.uio_kth.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -24,7 +27,6 @@ import nu.geeks.uio_kth.Database.GetProjectCallback;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
 import nu.geeks.uio_kth.Database.ServerRequest;
 import nu.geeks.uio_kth.R;
-import nu.geeks.uio_kth.Views.PopupViews;
 
 /**
  * The create-project-view.
@@ -34,7 +36,7 @@ import nu.geeks.uio_kth.Views.PopupViews;
 public class CreateProject extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
-    Button bCreate,bView;
+    Button bCreate,bView,bShare;
     EditText etPassword, etProjectName;
     TextView tv_create_project,tv_create_name,tv_create_password, tv_set_icon;
     ProjectDbHelper projectDbHelper;
@@ -44,7 +46,6 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
     List<String> spinnerArray = new ArrayList<String>();
     Typeface caviarBold;
     static final String TAG = "CreateProject";
-    String projectID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         bCreate = (Button) findViewById(R.id.bt_done);
         bCreate.setOnClickListener(this);
 
+
         // link button with view and set listener
         bView= (Button) findViewById(R.id.bCancel);
         bView.setOnClickListener(this);
@@ -129,18 +131,14 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
             case R.id.bCancel:
             viewProjects();
                 break;
+
         }
 
     }
 
-    public void openShareView(){
-
-        PopupViews.ShareView(this, caviarBold, "null");
-    }
 
 
     public void addProject(){
-
         DataProvider dataProvider = new DataProvider();
 
         dataProvider.setProjectName(etProjectName.getText().toString());
@@ -149,17 +147,14 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         projectDbHelper = new ProjectDbHelper(this);
         sqLiteDatabase = projectDbHelper.getWritableDatabase();
 
-        projectID = projectDbHelper.addProjectData(dataProvider, sqLiteDatabase);
+        projectDbHelper.addProjectData(dataProvider, sqLiteDatabase);
         Cursor cursor = projectDbHelper.getProjects(sqLiteDatabase);
         cursor.moveToLast();
         final int pos = cursor.getPosition();
         Log.e(TAG, "Cursor pos: " + pos);
 
-        Toast.makeText(getBaseContext(),"Project Saved",Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(getBaseContext(),"Project Saved",Toast.LENGTH_SHORT).show();
         projectDbHelper.close();
-
-
         ServerRequest serverRequest = new ServerRequest(this);
         serverRequest.storeProjectDataInBackground(dataProvider, new GetProjectCallback() {
             @Override
@@ -168,7 +163,11 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
                 Intent intent = new Intent(CreateProject.this,ProjectContentView.class);
                 intent.putExtra("project_id", projectPosition);
                 startActivity(intent);
-                //TODO - behöver vi inte en finnish() här?
+            }
+
+            @Override
+            public void done(DataProvider projectToAdd) {
+
             }
         });
 

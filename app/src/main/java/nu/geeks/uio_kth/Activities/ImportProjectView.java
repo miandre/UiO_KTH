@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import java.io.IOException;
-
+import nu.geeks.uio_kth.Database.GetProjectCallback;
+import nu.geeks.uio_kth.Database.ServerRequest;
+import nu.geeks.uio_kth.Objects.DataProvider;
 import nu.geeks.uio_kth.R;
 
 /**
@@ -16,9 +17,9 @@ public class ImportProjectView extends Activity {
 
     static final String TAG ="IMPORT_PROJECT";
 
-    TextView project_name;
-
-    String projectId;
+    TextView project_name_text;
+    DataProvider projectToAdd;
+    String projectId,project_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -36,9 +37,23 @@ public class ImportProjectView extends Activity {
             Log.e(TAG, "UNPARSABLE URL");
             finish();
         }
+        ServerRequest serverRequest = new ServerRequest(this);
+        serverRequest.fetchProjectDataInBackground(projectId, new GetProjectCallback() {
+            @Override
+            public void done(int projectPosition) {
 
-        project_name = (TextView) findViewById(R.id.tv_imp_proj_name);
-        project_name.setText(projectId);
+            }
+
+            @Override
+            public void done(DataProvider projectFromServer) {
+                projectToAdd = projectFromServer;
+                Log.e(TAG, projectToAdd.getProjectName());
+                project_name_text = (TextView) findViewById(R.id.tv_imp_proj_name);
+                project_name_text.setText(projectToAdd.getProjectName());
+            }
+        });
+
+
 
     }
 }
