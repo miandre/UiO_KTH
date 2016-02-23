@@ -72,15 +72,22 @@ public class ImportProjectView extends Activity implements View.OnClickListener 
             Log.e(TAG, "UNPARSABLE URL");
             finish();
         }
+
+        //Create a server request to fetch project data from online database
+        //based on project ID
         ServerRequest serverRequest = new ServerRequest(this);
         serverRequest.fetchProjectDataInBackground(projectId, new GetProjectCallback() {
+
+           //Empty callback method (overloaded), required by interface.
             @Override
             public void done(int projectPosition) {
 
             }
 
+            //This callback method contains the project data received from the database
             @Override
             public void done(DataProvider projectFromServer) {
+
                 //Copy reference to global variable
                 projectToAdd = projectFromServer;
                 //Display name of imported project
