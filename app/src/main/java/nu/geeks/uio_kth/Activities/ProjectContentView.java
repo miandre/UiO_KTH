@@ -24,6 +24,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import nu.geeks.uio_kth.Database.GetProjectCallback;
+import nu.geeks.uio_kth.Database.GetTransactionCallback;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
 import nu.geeks.uio_kth.Database.ServerRequest;
 import nu.geeks.uio_kth.Database.TransactionsDbHelper;
@@ -92,6 +93,8 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         setListView();
 
+        getOnlineData();
+
 
         add_transaction = (Button) findViewById(R.id.bt_add_trans);
         add_transaction.setOnClickListener(this);
@@ -99,6 +102,16 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         bShare = (Button) findViewById(R.id.bShare2);
         bShare.setOnClickListener(this);
 
+    }
+
+    private void getOnlineData() {
+        ServerRequest serverRequest = new ServerRequest(this);
+        serverRequest.fetchProjectContentInBackground(projectId, new GetTransactionCallback() {
+            @Override
+            public void done(ArrayList<Transaction> transactions) {
+
+            }
+        });
     }
 
     // expenses list (totals)
