@@ -47,6 +47,7 @@ public class ServerRequest {
     }
 
 
+    //Method called to store project data. Opens e progress dialog and calls an Asynchronus background task.
 
     public void storeProjectDataInBackground(DataProvider dataProvider, GetProjectCallback projectCallback) {
         progressDialog.show();
@@ -54,6 +55,8 @@ public class ServerRequest {
 
     }
 
+
+    //Method called to store transaction data. Opens e progress dialog and calls an Asynchronus background task.
     public void storeTransactionDataInBackground(Transaction transaction, GetProjectCallback projectCallback) {
         progressDialog.show();
 
@@ -61,7 +64,7 @@ public class ServerRequest {
 
     }
 
-
+    //Method called to fetch project data. Opens e progress dialog and calls an Asynchronus background task.
     public void fetchProjectDataInBackground(String project_id, GetProjectCallback projectCallback){
         progressDialog.show();
         new fetchProjectDataAsyncTask(project_id, projectCallback).execute();
@@ -70,16 +73,19 @@ public class ServerRequest {
 
 
 
-
+    //Inner class that performs asynchronus backround tasks.
     public class storeProjectDataAsyncTask extends AsyncTask<Void, Void, Void> {
         DataProvider dataProvider;
         GetProjectCallback projectCallback;
 
+        //constructor
         public storeProjectDataAsyncTask(DataProvider dataProvider, GetProjectCallback projectCallback) {
             this.projectCallback = projectCallback;
             this.dataProvider = dataProvider;
         }
 
+
+        //Method to use for everything that should be performed in the background
         @Override
         protected Void doInBackground(Void... params) {
 
@@ -92,8 +98,10 @@ public class ServerRequest {
             dataToSend.add(new BasicNameValuePair("password", dataProvider.getProjectPassword()));
             dataToSend.add(new BasicNameValuePair("icon", dataProvider.getProjectIcon()));
 
-            Log.e(TAG, "ID: "+dataProvider.getProjectId()+ "\nName: "+dataProvider.getProjectName()
-                    +"\nPassword: "+dataProvider.getProjectPassword()+"\n Icon: "+dataProvider.getProjectIcon());
+            //Debug
+            Log.e(TAG, "ID: " + dataProvider.getProjectId() + "\nName: " + dataProvider.getProjectName()
+                    + "\nPassword: " + dataProvider.getProjectPassword() + "\n Icon: " + dataProvider.getProjectIcon());
+
 
             //Create the http request and set timeout-time
             HttpParams httpRequestParams = new BasicHttpParams();
@@ -102,9 +110,10 @@ public class ServerRequest {
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
 
+            //Create a post with the  adress to the *.php file as argument
             HttpPost post = new HttpPost(SERVER_ADDRESS + "StoreProject.php");
 
-            //Post the http-request
+            //Post the http-request (must be try-catch)
             try {
                 post.setEntity(new UrlEncodedFormEntity(dataToSend));
                 client.execute(post);
@@ -116,13 +125,18 @@ public class ServerRequest {
         }
 
         //Close "wait" dialog
+        //This methot is called after Backgroundtask is finished.
         @Override
         protected void onPostExecute(Void aVoid) {
+            //Close the progress dialog
             progressDialog.dismiss();
+            //Call the callback task to finish the asynch task
             projectCallback.done(0);
             super.onPostExecute(aVoid);
         }
     }
+
+
 
     public class storeTransactionDataAsyncTask extends AsyncTask<Void, Void, Void> {
         Transaction transaction;
@@ -145,6 +159,7 @@ public class ServerRequest {
             dataToSend.add(new BasicNameValuePair("amount",String.valueOf(transaction.amount)));
             dataToSend.add(new BasicNameValuePair("object", transaction.object));
 
+            //Debug
             Log.e(TAG, "ID: "+transaction.projectId+ "\nName: "+transaction.person
                     +"\nAmount: "+String.valueOf(transaction.amount)+"\n Object: "+transaction.object);
 
@@ -169,9 +184,12 @@ public class ServerRequest {
         }
 
         //Close "wait" dialog
+        //This method is called after Backgroundtask is finished.
         @Override
         protected void onPostExecute(Void aVoid) {
+            //Close the progress dialog
             progressDialog.dismiss();
+            //Call the callback task to finish the asynch task
             projectCallback.done(0);
             super.onPostExecute(aVoid);
         }
@@ -212,12 +230,16 @@ public class ServerRequest {
                 String result = EntityUtils.toString(entity);
                 Log.e("jsonAnswer: ", result);
 
+                //Create JSON object to store handle recieved data
                 JSONObject jsonObject = new JSONObject(result);
 
+                //Chack if server did not return error
                 if (jsonObject.has("fail")){
                     Log.e(TAG,"jsonFail");
                     projectToAdd = null;
                 } else {
+
+                    //Set variable values by extracting data from JSON object, based on keys defined in php-file
                     String project_name = jsonObject.getString("name");
                     String project_id = jsonObject.getString("project_id");
                     String project_password = jsonObject.getString("password");
@@ -232,10 +254,11 @@ public class ServerRequest {
                 Log.d("ServerRequest: ", "try failed");
             }
 
-
+            //Return dhe recieved data as an object
             return projectToAdd;
         }
 
+        //finsh the background task and pass te stored data in an object to the callback function
         @Override
         protected void onPostExecute(DataProvider projectToAdd) {
             progressDialog.dismiss();
