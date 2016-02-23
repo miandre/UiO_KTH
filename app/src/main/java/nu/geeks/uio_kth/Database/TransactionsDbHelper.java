@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import nu.geeks.uio_kth.Transaction;
+
 /**
  *
  * Created by Hannes on 2016-02-20.
@@ -34,14 +36,14 @@ public class TransactionsDbHelper extends SQLiteOpenHelper {
         Log.e(TAG, "Table created with " + CREATE);
     }
 
-    public void addInformation(String projectId, String Person, String amount, String object, SQLiteDatabase db){
+    public void addInformation(Transaction transaction, SQLiteDatabase db){
 
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(ProjectProperties.NewTransactionData.PROJECT_ID, projectId);
-        contentValues.put(ProjectProperties.NewTransactionData.PERSON, Person);
-        contentValues.put(ProjectProperties.NewTransactionData.amount, amount);
-        contentValues.put(ProjectProperties.NewTransactionData.object, object);
+        contentValues.put(ProjectProperties.NewTransactionData.PROJECT_ID, transaction.projectId);
+        contentValues.put(ProjectProperties.NewTransactionData.PERSON, transaction.person);
+        contentValues.put(ProjectProperties.NewTransactionData.amount, transaction.amount);
+        contentValues.put(ProjectProperties.NewTransactionData.object, transaction.object);
         db.insert(ProjectProperties.NewTransactionData.TABLE_NAME, null, contentValues);
         Log.e(TAG, "added new row");
     }

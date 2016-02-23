@@ -2,6 +2,7 @@ package nu.geeks.uio_kth;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -23,7 +24,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import nu.geeks.uio_kth.Database.GetProjectCallback;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
+import nu.geeks.uio_kth.Database.ServerRequest;
 import nu.geeks.uio_kth.Database.TransactionsDbHelper;
 
 /**
@@ -186,7 +189,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         Transaction transaction = new Transaction(projectId, by, amount, object);
         transactionsDbHelper = new TransactionsDbHelper(this);
         sqLiteDatabase = transactionsDbHelper.getWritableDatabase();
-        transactionsDbHelper.addInformation(projectId, by, amount, object, sqLiteDatabase);
+        transactionsDbHelper.addInformation(transaction, sqLiteDatabase);
         transactions.add(transaction);
 
         boolean isInPersons = false;
@@ -198,6 +201,15 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         }
 
         if(!isInPersons) persons.add(new Person(transaction.person, transaction.amount));
+        update();
+        transactionsDbHelper.close();
+        ServerRequest serverRequest = new ServerRequest(this);
+        serverRequest.storeTransactionDataInBackground(transaction, new GetProjectCallback() {
+            @Override
+            public void done(int projectPosition) {
+
+            }
+        });
         update();
     }
 
@@ -349,5 +361,17 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         });
 
         builder.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        viewProjects();
+    }
+
+    public void viewProjects(){
+
+        startActivity(new Intent(this, ProjectView.class));
+        finish();
     }
 }

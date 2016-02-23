@@ -28,6 +28,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import nu.geeks.uio_kth.Transaction;
+
 
 public class ServerRequest {
 
@@ -47,8 +49,14 @@ public class ServerRequest {
 
     public void storeProjectDataInBackground(DataProvider dataProvider, GetProjectCallback projectCallback) {
         progressDialog.show();
-        Log.e(TAG, "storeProjectDataInBackground");
         new storeProjectDataAsyncTask(dataProvider, projectCallback).execute();
+
+    }
+
+    public void storeTransactionDataInBackground(Transaction transaction, GetProjectCallback projectCallback) {
+        progressDialog.show();
+
+        new storeTransactionDataAsyncTask(transaction, projectCallback).execute();
 
     }
 
@@ -84,7 +92,7 @@ public class ServerRequest {
             dataToSend.add(new BasicNameValuePair("icon", dataProvider.getProjectIcon()));
 
             Log.e(TAG, "ID: "+dataProvider.getProjectId()+ "\nName: "+dataProvider.getProjectName()
-            +"\nPassword: "+dataProvider.getProjectPassword()+"\n Icon: "+dataProvider.getProjectIcon());
+                    +"\nPassword: "+dataProvider.getProjectPassword()+"\n Icon: "+dataProvider.getProjectIcon());
 
             //Create the http request and set timeout-time
             HttpParams httpRequestParams = new BasicHttpParams();
@@ -114,6 +122,60 @@ public class ServerRequest {
             super.onPostExecute(aVoid);
         }
     }
+
+    public class storeTransactionDataAsyncTask extends AsyncTask<Void, Void, Void> {
+        Transaction transaction;
+        GetProjectCallback projectCallback;
+
+        public storeTransactionDataAsyncTask(Transaction transaction, GetProjectCallback projectCallback) {
+            this.projectCallback = projectCallback;
+            this.transaction = transaction;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+
+            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+
+            //Add data to send as an http post
+            dataToSend.add(new BasicNameValuePair("project_id",transaction.projectId));
+            dataToSend.add(new BasicNameValuePair("person", transaction.person));
+            dataToSend.add(new BasicNameValuePair("amount",String.valueOf(transaction.amount)));
+            dataToSend.add(new BasicNameValuePair("object", transaction.object));
+
+            Log.e(TAG, "ID: "+transaction.projectId+ "\nName: "+transaction.person
+                    +"\nAmount: "+String.valueOf(transaction.amount)+"\n Object: "+transaction.object);
+
+            //Create the http request and set timeout-time
+            HttpParams httpRequestParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+
+            HttpPost post = new HttpPost(SERVER_ADDRESS + "StoreTransaction.php");
+
+            //Post the http-request
+            try {
+                post.setEntity(new UrlEncodedFormEntity(dataToSend));
+                client.execute(post);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, "Exception caught");
+            }
+            return null;
+        }
+
+        //Close "wait" dialog
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            progressDialog.dismiss();
+            projectCallback.done(0);
+            super.onPostExecute(aVoid);
+        }
+    }
+
 
 /*    public class fetchUserDataAsyncTask extends AsyncTask<Void, Void, User> {
         User user;

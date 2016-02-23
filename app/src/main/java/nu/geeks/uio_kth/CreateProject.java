@@ -131,7 +131,6 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         switch(v.getId()){
             case R.id.bCreate:
                 addProject();
-                viewProjects();
                 break;
             case R.id.bCancel:
             viewProjects();
