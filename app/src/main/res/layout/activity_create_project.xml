@@ -107,7 +107,7 @@
         <Button
             android:layout_width="89dp"
             android:layout_height="76dp"
-            android:id="@+id/bCreate"
+            android:id="@+id/bt_done"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:background="@drawable/check"
@@ -117,18 +117,9 @@
         <Button
             android:layout_width="89dp"
             android:layout_height="76dp"
-            android:id="@+id/bShare"
-            android:background="@drawable/share"
-            android:layout_alignTop="@+id/bCreate"
-            android:layout_toEndOf="@+id/bCreate"
-            android:layout_marginLeft="30dp" />
-
-        <Button
-            android:layout_width="89dp"
-            android:layout_height="76dp"
             android:id="@+id/bCancel"
-            android:layout_alignBottom="@+id/bShare"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/cancel" />
+            android:background="@drawable/cancel"
+            android:layout_alignTop="@+id/bt_done"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 </LinearLayout>

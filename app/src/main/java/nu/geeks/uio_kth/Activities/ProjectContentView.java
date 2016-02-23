@@ -30,6 +30,7 @@ import nu.geeks.uio_kth.Database.TransactionsDbHelper;
 import nu.geeks.uio_kth.Objects.Person;
 import nu.geeks.uio_kth.R;
 import nu.geeks.uio_kth.Objects.Transaction;
+import nu.geeks.uio_kth.Views.PopupViews;
 
 /**
  * Created by Hannes on 2016-02-19.
@@ -187,8 +188,8 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
     }
 
-    public void addTransaction(String amount, String object, String by){
-        Transaction transaction = new Transaction(projectId, by, amount, object);
+    public void addTransaction(Transaction transaction){
+
         transactionsDbHelper = new TransactionsDbHelper(this);
         sqLiteDatabase = transactionsDbHelper.getWritableDatabase();
         transactionsDbHelper.addInformation(transaction, sqLiteDatabase);
@@ -196,7 +197,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         boolean isInPersons = false;
         for(Person p : persons){
-            if(p.isSame(by)){
+            if(p.isSame(transaction.person)){
                 p.amount += transaction.amount;
                 isInPersons = true;
             }
@@ -241,64 +242,10 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.bt_add_trans:
-                // make popup view
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogLayout = inflater.inflate(R.layout.add_transaction, null);
-                final AlertDialog builder = new AlertDialog.Builder(this).create();
-                builder.setView(dialogLayout);
 
-                //Initialize buttons end edittexts.
-                Button ok = (Button) dialogLayout.findViewById(R.id.bt_ok_add_trans);
-                Button cancel = (Button) dialogLayout.findViewById(R.id.bt_cancel_trans);
-                String[] names = getNameList();
-                final EditText add_trans_object, add_trans_amount;
-                final AutoCompleteTextView add_trans_by_who;
-                final ArrayAdapter<String> personAutoAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
-
-                add_trans_by_who = (AutoCompleteTextView) dialogLayout.findViewById(R.id.et_by_who);
-                add_trans_object = (EditText) dialogLayout.findViewById(R.id.et_object);
-                add_trans_amount = (EditText) dialogLayout.findViewById(R.id.et_amount);
-
-                // auto completion
-                add_trans_by_who.setAdapter(personAutoAdapter);
-                add_trans_by_who.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_trans_by_who.showDropDown();
-                    }
-                });
-                add_trans_by_who.setThreshold(1);
+                openAddTransactionPopup();
 
 
-                ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // get text fields
-                        String amount = add_trans_amount.getText().toString();
-                        String object = add_trans_object.getText().toString();
-                        String byWho = add_trans_by_who.getText().toString();
-
-                        // verify not empty
-                        if (amount.equals("") || object.equals("") || byWho.equals("")){
-                            Toast.makeText(getApplicationContext(), "You have to add something", Toast.LENGTH_LONG).show();
-                            Log.e(TAG, "okButton failed");
-                        }else{
-                            Log.e(TAG, "okButton OK");
-                            // add expense
-                            addTransaction(amount, object, byWho);
-                            builder.dismiss();
-                        }
-                    }
-                });
-
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder.dismiss();
-                    }
-                });
-
-                builder.show();
                 break;
 
             case R.id.bShare2:
@@ -308,18 +255,60 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         }
     }
 
-    public void openShareView(){ // duplicated?
-
+    //Wanted to do this as a static method in PopupViews, but since the addbutton calls another
+    private void openAddTransactionPopup() {
+        // make popup view
         LayoutInflater inflater = getLayoutInflater();
-        View dialogLayout = inflater.inflate(R.layout.share_view, null);
+        View dialogLayout = inflater.inflate(R.layout.add_transaction, null);
         final AlertDialog builder = new AlertDialog.Builder(this).create();
         builder.setView(dialogLayout);
 
-        Button ok = (Button) dialogLayout.findViewById(R.id.bDoneShare);
-        TextView text = (TextView)dialogLayout.findViewById(R.id.tv_share_text);
-        text.setTypeface(caviarBold);
-        text.setTextColor(Color.WHITE);
+        //Initialize buttons end edittexts.
+        Button ok = (Button) dialogLayout.findViewById(R.id.bt_ok_add_trans);
+        Button cancel = (Button) dialogLayout.findViewById(R.id.bt_cancel_trans);
+        String[] names = getNameList();
+        final EditText add_trans_object, add_trans_amount;
+        final AutoCompleteTextView add_trans_by_who;
+        final ArrayAdapter<String> personAutoAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
+
+        add_trans_by_who = (AutoCompleteTextView) dialogLayout.findViewById(R.id.et_by_who);
+        add_trans_object = (EditText) dialogLayout.findViewById(R.id.et_object);
+        add_trans_amount = (EditText) dialogLayout.findViewById(R.id.et_amount);
+
+        // auto completion
+        add_trans_by_who.setAdapter(personAutoAdapter);
+        add_trans_by_who.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_trans_by_who.showDropDown();
+            }
+        });
+        add_trans_by_who.setThreshold(1);
+
+
         ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // get text fields
+                String amount = add_trans_amount.getText().toString();
+                String object = add_trans_object.getText().toString();
+                String byWho = add_trans_by_who.getText().toString();
+
+                // verify not empty
+                if (amount.equals("") || object.equals("") || byWho.equals("")){
+                    Toast.makeText(getApplicationContext(), "You have to add something", Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "okButton failed");
+                }else{
+                    Log.e(TAG, "okButton OK");
+                    // add expense
+                    Transaction transaction = new Transaction(projectId, byWho, amount, object);
+                    addTransaction(transaction);
+                    builder.dismiss();
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 builder.dismiss();
@@ -327,7 +316,10 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         });
 
         builder.show();
+    }
 
+    public void openShareView(){
+        PopupViews.ShareView(this, caviarBold, projectId);
     }
 
     @Override
@@ -344,25 +336,10 @@ public class ProjectContentView extends Activity implements View.OnClickListener
             }
         }
 
+
+
         // open as popup
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogLayout = inflater.inflate(R.layout.single_person_transactions, null);
-        final AlertDialog builder = new AlertDialog.Builder(this).create();
-        builder.setView(dialogLayout);
-
-        Button ok = (Button) dialogLayout.findViewById(R.id.tv_single_person_ok);
-        TextView text = (TextView)dialogLayout.findViewById(R.id.tv_single_person_transactions);
-        text.setTypeface(caviarBold);
-        text.setTextColor(Color.WHITE);
-        text.setText(msg);
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                builder.dismiss();
-            }
-        });
-
-        builder.show();
+        PopupViews.PersonalExpensesView(this, caviarBold, msg);
     }
 
     @Override

@@ -36,12 +36,12 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
         Log.e(TAG, "Table created, query: ´" + CREATE_QUERY);
     }
 
-    public void addProjectData(DataProvider dataProvider, SQLiteDatabase db){
+    public String addProjectData(DataProvider dataProvider, SQLiteDatabase db){
 
         ContentValues contentValues = new ContentValues();
 
-
-        dataProvider.setProjectId(generateProjectId());
+        String projectId = generateProjectId();
+        dataProvider.setProjectId(projectId);
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_NAME,dataProvider.getProjectName());
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_PASSWORD,dataProvider.getProjectPassword());
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_ID,dataProvider.getProjectId());
@@ -50,6 +50,7 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
 
 
         Log.e(TAG, "New Project Added: "+contentValues.getAsString(ProjectProperties.NewProjectData.PROJECT_NAME));
+        return projectId;
     }
 
     public Cursor getProjects(SQLiteDatabase db){
