@@ -1,4 +1,4 @@
-package nu.geeks.uio_kth;
+package nu.geeks.uio_kth.Objects;
 
 /**
  * Created by Hannes on 2016-02-21.

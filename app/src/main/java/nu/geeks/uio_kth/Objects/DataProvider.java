@@ -1,4 +1,4 @@
-package nu.geeks.uio_kth.Database;
+package nu.geeks.uio_kth.Objects;
 
 // DTO for project data
 public class DataProvider  {

@@ -12,8 +12,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -23,12 +21,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import nu.geeks.uio_kth.Transaction;
+import nu.geeks.uio_kth.Objects.DataProvider;
+import nu.geeks.uio_kth.Objects.Transaction;
 
 
 public class ServerRequest {

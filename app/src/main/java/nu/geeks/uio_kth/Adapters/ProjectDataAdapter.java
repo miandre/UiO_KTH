@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.geeks.uio_kth.Database.DataProvider;
+import nu.geeks.uio_kth.Objects.DataProvider;
 import nu.geeks.uio_kth.R;
 
 /**

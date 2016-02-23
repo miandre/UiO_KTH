@@ -3,12 +3,11 @@ package nu.geeks.uio_kth.Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import nu.geeks.uio_kth.Transaction;
+import nu.geeks.uio_kth.Objects.Transaction;
 
 /**
  *

@@ -1,8 +1,7 @@
-package nu.geeks.uio_kth;
+package nu.geeks.uio_kth.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,12 +21,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.geeks.uio_kth.Adapters.ProjectDataAdapter;
 import nu.geeks.uio_kth.Adapters.SpinnerAdapter;
-import nu.geeks.uio_kth.Database.DataProvider;
+import nu.geeks.uio_kth.Objects.DataProvider;
 import nu.geeks.uio_kth.Database.GetProjectCallback;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
 import nu.geeks.uio_kth.Database.ServerRequest;
+import nu.geeks.uio_kth.R;
 
 /**
  * The create-project-view.

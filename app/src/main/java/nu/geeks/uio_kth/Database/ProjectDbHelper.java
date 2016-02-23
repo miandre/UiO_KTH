@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import nu.geeks.uio_kth.Objects.DataProvider;
+
 /**
  * Created by Micke on 2016-02-17.
  */

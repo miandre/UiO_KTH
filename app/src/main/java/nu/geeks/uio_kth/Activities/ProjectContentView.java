@@ -1,4 +1,4 @@
-package nu.geeks.uio_kth;
+package nu.geeks.uio_kth.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,12 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import nu.geeks.uio_kth.Database.GetProjectCallback;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
 import nu.geeks.uio_kth.Database.ServerRequest;
 import nu.geeks.uio_kth.Database.TransactionsDbHelper;
+import nu.geeks.uio_kth.Objects.Person;
+import nu.geeks.uio_kth.R;
+import nu.geeks.uio_kth.Objects.Transaction;
 
 /**
  * Created by Hannes on 2016-02-19.

@@ -1,16 +1,13 @@
-package nu.geeks.uio_kth;
+package nu.geeks.uio_kth.Activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import nu.geeks.uio_kth.Adapters.ProjectDataAdapter;
-import nu.geeks.uio_kth.Database.DataProvider;
+import nu.geeks.uio_kth.Objects.DataProvider;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
+import nu.geeks.uio_kth.R;
 
 
 /**
