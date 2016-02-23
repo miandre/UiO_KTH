@@ -37,17 +37,7 @@
     android:shadowDy="1"
     android:shadowRadius="3"
     android:paddingBottom="2dp" />
-<!--
-    <TextView
 
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_project_password"
-        android:text="Project Password"
-        android:gravity="left"
-        android:textColor="#000000"
-        />
-        -->
     <TextView
         android:layout_width="150dp"
         android:layout_height="wrap_content"

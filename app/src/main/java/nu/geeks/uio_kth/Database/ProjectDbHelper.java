@@ -25,7 +25,7 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
 
     public ProjectDbHelper(Context context){
 
-        super(context, DATABASE_NAME,null,DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         Log.e(TAG, "Database created/opened, query: " + CREATE_QUERY);
     }
 
@@ -37,11 +37,15 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
     }
 
     public String addProjectData(DataProvider dataProvider, SQLiteDatabase db){
-
+        String projectId;
         ContentValues contentValues = new ContentValues();
 
-        String projectId = generateProjectId();
-        dataProvider.setProjectId(projectId);
+        if (dataProvider.getProjectId()==null){
+            projectId = generateProjectId();
+            Log.e(TAG,dataProvider.getProjectId());
+            dataProvider.setProjectId(projectId);
+        }else projectId=dataProvider.getProjectId();
+
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_NAME,dataProvider.getProjectName());
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_PASSWORD,dataProvider.getProjectPassword());
         contentValues.put(ProjectProperties.NewProjectData.PROJECT_ID,dataProvider.getProjectId());
@@ -52,6 +56,8 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
         Log.e(TAG, "New Project Added: "+contentValues.getAsString(ProjectProperties.NewProjectData.PROJECT_NAME));
         return projectId;
     }
+
+
 
     public Cursor getProjects(SQLiteDatabase db){
 
@@ -69,20 +75,20 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.delete(ProjectProperties.NewProjectData.TABLE_NAME,selection,selection_args);
     }
 
-private String generateProjectId(){
+    private String generateProjectId(){
 
-    int length =(int)(Math.random()*20%5)+5;
-    StringBuilder ret = new StringBuilder();
+        int length =(int)(Math.random()*20%5)+5;
+        StringBuilder ret = new StringBuilder();
 
-    for(int i = 0; i<length; i++){
-        char appender =(char)((Math.random()*System.currentTimeMillis()%57)+65);
-        if (appender>96||appender<91)
-            ret.append(appender);
-        else i--;
+        for(int i = 0; i<length; i++){
+            char appender =(char)((Math.random()*System.currentTimeMillis()%57)+65);
+            if (appender>96||appender<91)
+                ret.append(appender);
+            else i--;
+        }
+        Log.e(TAG,"Generated ID" + ret.toString());
+        return ret.toString();
     }
-    Log.e(TAG,"Generated ID" + ret.toString());
-    return ret.toString();
-}
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

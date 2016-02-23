@@ -27,9 +27,7 @@ public class DataProvider  {
         return projectPassword;
     }
 
-    public String getProjectId() {
-        return projectId;
-    }
+    public String getProjectId() { return projectId;    }
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
