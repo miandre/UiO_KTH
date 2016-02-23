@@ -13,6 +13,7 @@ public class ImportProjectView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle b = getIntent().getExtras();
 
     }
 }
