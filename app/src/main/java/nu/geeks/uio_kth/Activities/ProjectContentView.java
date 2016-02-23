@@ -88,13 +88,6 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         projectName.setText(projectNameString);
         projectName.setTextColor(Color.WHITE);
 
-        readTransactions();
-        fillPersonList();
-
-        setListView();
-
-        getOnlineData();
-
 
         add_transaction = (Button) findViewById(R.id.bt_add_trans);
         add_transaction.setOnClickListener(this);
@@ -102,14 +95,26 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         bShare = (Button) findViewById(R.id.bShare2);
         bShare.setOnClickListener(this);
 
+        getOnlineData();
+        //readTransactions();
+       // fillPersonList();
+
+        //setListView();
+
+
+
+
+
     }
 
     private void getOnlineData() {
         ServerRequest serverRequest = new ServerRequest(this);
         serverRequest.fetchProjectContentInBackground(projectId, new GetTransactionCallback() {
             @Override
-            public void done(ArrayList<Transaction> transactions) {
-
+            public void done(ArrayList<Transaction> onlineTransactions) {
+                transactions=onlineTransactions;
+                fillPersonList();
+                setListView();
             }
         });
     }

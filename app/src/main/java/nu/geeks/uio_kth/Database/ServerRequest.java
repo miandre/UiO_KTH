@@ -108,8 +108,8 @@ public class ServerRequest {
             dataToSend.add(new BasicNameValuePair("icon", dataProvider.getProjectIcon()));
 
             //Debug
-            Log.e(TAG, "ID: " + dataProvider.getProjectId() + "\nName: " + dataProvider.getProjectName()
-                    + "\nPassword: " + dataProvider.getProjectPassword() + "\n Icon: " + dataProvider.getProjectIcon());
+          //  Log.e(TAG, "ID: " + dataProvider.getProjectId() + "\nName: " + dataProvider.getProjectName()
+            //        + "\nPassword: " + dataProvider.getProjectPassword() + "\n Icon: " + dataProvider.getProjectIcon());
 
 
             //Create the http request and set timeout-time
@@ -169,7 +169,7 @@ public class ServerRequest {
             dataToSend.add(new BasicNameValuePair("object", transaction.object));
 
             //Debug
-            Log.e(TAG, "ID: "+transaction.projectId+ "\nName: "+transaction.person
+            Log.e(TAG, "Store Transaction: \nID: "+transaction.projectId+ "\nName: "+transaction.person
                     +"\nAmount: "+String.valueOf(transaction.amount)+"\n Object: "+transaction.object);
 
             //Create the http request and set timeout-time
@@ -319,7 +319,7 @@ public class fetchProjectContentAsyncTask extends AsyncTask<Void, Void, ArrayLis
 
             //Create JSON object to store handle recieved data
             JSONArray jsonArray = new JSONArray(result);
-            JSONObject jsonObject = new JSONObject();
+            JSONObject jsonObject;
 
             //Chack if server did not return error
             if (jsonArray.getJSONObject(0).has("fail")){
@@ -338,7 +338,7 @@ public class fetchProjectContentAsyncTask extends AsyncTask<Void, Void, ArrayLis
                     transactions.add(new Transaction(project_id, person, amount, object));
                     //String project_currency = jsonObject.getString("currency");
 
-                    Log.e(TAG, "ID: "+transactions.get(i).projectId+ "\nName: "+transactions.get(i).person
+                    Log.e(TAG, "Transaction in list:\nID: "+transactions.get(i).projectId+ "\nName: "+transactions.get(i).person
                             +"\nAmount: "+transactions.get(i).amount+"\n Object: "+transactions.get(i).object);
                 }
             }
