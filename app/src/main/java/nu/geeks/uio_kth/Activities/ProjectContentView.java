@@ -48,7 +48,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     SQLiteDatabase sqLiteDatabase;
     Cursor cursorProject, cursorContent;
 
-    TextView projectName, totalExpenses;
+    TextView projectName, totalExpenses, tv_by_who, tv_what, tv_how_much;
 
 
     ArrayList<Transaction> transactions; //This holds all the transactions.
@@ -70,6 +70,8 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         setContentView(R.layout.activity_project_content);
 
+        caviarBold = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
+
         //Get the extras that contain the id (actually cursor position) from the main screen.
         Bundle b = getIntent().getExtras();
         projectPosition = b.getInt("project_id");
@@ -79,8 +81,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         projectName = (TextView) findViewById(R.id.tvProjectName); //Lol naming convention.
         totalExpenses = (TextView) findViewById(R.id.tv_total_expences);
 
+
         // font
-        caviarBold = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
+
         totalExpenses.setTypeface(caviarBold);
         totalExpenses.setTextColor(Color.WHITE);
 
@@ -96,9 +99,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         bShare.setOnClickListener(this);
 
         getOnlineData();
-        //readTransactions();
-       // fillPersonList();
 
+        //readTransactions();
+        //fillPersonList();
         //setListView();
 
     }
@@ -112,7 +115,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
             @Override
             public void done(ArrayList<Transaction> onlineTransactions) {
                 //reference online data to lokal transaction list
-                transactions=onlineTransactions;
+                transactions = onlineTransactions;
 
                 //Update lists of persons
                 fillPersonList();
@@ -179,8 +182,6 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         projectId = cursorProject.getString(2);
         return name;
     }
-
-
 
 
 
@@ -288,6 +289,14 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         final AlertDialog builder = new AlertDialog.Builder(this).create();
         builder.setView(dialogLayout);
 
+        tv_by_who = (TextView) dialogLayout.findViewById(R.id.tv_by_who);
+        tv_what = (TextView) dialogLayout.findViewById(R.id.tv_what);
+        tv_how_much = (TextView) dialogLayout.findViewById(R.id.tv_how_much);
+
+        tv_by_who.setTypeface(caviarBold);
+        tv_what.setTypeface(caviarBold);
+        tv_how_much.setTypeface(caviarBold);
+
         //Initialize buttons end edittexts.
         Button ok = (Button) dialogLayout.findViewById(R.id.bt_ok_add_trans);
         Button cancel = (Button) dialogLayout.findViewById(R.id.bt_cancel_trans);
@@ -297,18 +306,52 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         final ArrayAdapter<String> personAutoAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
 
         add_trans_by_who = (AutoCompleteTextView) dialogLayout.findViewById(R.id.et_by_who);
+        add_trans_by_who.setTypeface(caviarBold);
+
         add_trans_object = (EditText) dialogLayout.findViewById(R.id.et_object);
+        add_trans_object.setTypeface(caviarBold);
+
         add_trans_amount = (EditText) dialogLayout.findViewById(R.id.et_amount);
+        add_trans_amount.setTypeface(caviarBold);
+
+
 
         // auto completion
+        //Remove hint when object is focused
         add_trans_by_who.setAdapter(personAutoAdapter);
         add_trans_by_who.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                add_trans_by_who.setHint("");
                 add_trans_by_who.showDropDown();
             }
         });
         add_trans_by_who.setThreshold(1);
+
+        //Remove hint when object is focused
+        add_trans_object.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    add_trans_object.setHint("");
+                } else {
+
+                    add_trans_object.setHint("What did you buy?");
+                }
+            }
+        });
+
+        //Remove hint when object is focused
+        add_trans_amount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    add_trans_amount.setHint("");
+                }else{
+                    add_trans_amount.setHint("What did it cost?");
+                }
+            }
+        });
 
 
         ok.setOnClickListener(new View.OnClickListener() {

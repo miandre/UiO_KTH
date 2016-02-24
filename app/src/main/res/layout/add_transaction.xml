@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:paddingTop="15dp"
     android:id="@+id/alertTransaction"
     android:background="@drawable/popup_bg">
 
@@ -11,37 +12,62 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp"
         android:text="By Who?"
         android:id="@+id/tv_by_who"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="3"/>
 
     <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/et_by_who"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textCursorDrawable="@null"
+        android:hint="Who bought something?"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="25dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="What?"
         android:id="@+id/tv_what"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:paddingTop="15dp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/et_object"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textCursorDrawable="@null"
+        android:hint="What did you buy?"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="25dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="How much?"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/tv_how_much"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:paddingTop="15dp"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -49,13 +75,17 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/et_amount"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:hint="What did it cost?"
+        android:textCursorDrawable="@null"/>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="30dp"
+        android:layout_marginLeft="10dp">
 
         <Button
             android:layout_width="89dp"

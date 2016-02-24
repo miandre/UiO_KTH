@@ -61,7 +61,10 @@ public class ProjectDbHelper extends SQLiteOpenHelper {
 
     public Cursor getProjects(SQLiteDatabase db){
 
-        String[] projections = {ProjectProperties.NewProjectData.PROJECT_NAME, ProjectProperties.NewProjectData.PROJECT_PASSWORD, ProjectProperties.NewProjectData.PROJECT_ID, ProjectProperties.NewProjectData.PROJECT_ICON};
+        String[] projections = {ProjectProperties.NewProjectData.PROJECT_NAME,
+                ProjectProperties.NewProjectData.PROJECT_PASSWORD,
+                ProjectProperties.NewProjectData.PROJECT_ID,
+                ProjectProperties.NewProjectData.PROJECT_ICON};
 
         return db.query(ProjectProperties.NewProjectData.TABLE_NAME,projections,null,null,null,null,null);
 
