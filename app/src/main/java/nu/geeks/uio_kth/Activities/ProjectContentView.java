@@ -101,23 +101,27 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         //setListView();
 
-
-
-
-
     }
 
+    //Retreive projet content from online service
     private void getOnlineData() {
+
+        //Create service request
         ServerRequest serverRequest = new ServerRequest(this);
         serverRequest.fetchProjectContentInBackground(projectId, new GetTransactionCallback() {
             @Override
             public void done(ArrayList<Transaction> onlineTransactions) {
+                //reference online data to lokal transaction list
                 transactions=onlineTransactions;
+
+                //Update lists of persons
                 fillPersonList();
+                //Create/set the list view
                 setListView();
             }
         });
     }
+
 
     // expenses list (totals)
     private void setListView() {
@@ -142,7 +146,6 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         listView.setAdapter(personArrayAdapter);
         update();
 
-
         listView.setOnItemClickListener(this);
     }
 
@@ -166,9 +169,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     }
 
 
-
     private String getName(int projectPosition){
-
 
         ProjectDbHelper dbHelper = new ProjectDbHelper(getApplicationContext());
         sqLiteDatabase = dbHelper.getReadableDatabase();

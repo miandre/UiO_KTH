@@ -108,7 +108,7 @@ public class ServerRequest {
             dataToSend.add(new BasicNameValuePair("icon", dataProvider.getProjectIcon()));
 
             //Debug
-          //  Log.e(TAG, "ID: " + dataProvider.getProjectId() + "\nName: " + dataProvider.getProjectName()
+            //  Log.e(TAG, "ID: " + dataProvider.getProjectId() + "\nName: " + dataProvider.getProjectName()
             //        + "\nPassword: " + dataProvider.getProjectPassword() + "\n Icon: " + dataProvider.getProjectIcon());
 
 
@@ -193,7 +193,7 @@ public class ServerRequest {
         }
 
         //Close "wait" dialog
-        //This method is called after Backgroundtask is finished.
+        //this task is automatically called after doInBackground() is finished
         @Override
         protected void onPostExecute(Void aVoid) {
             //Close the progress dialog
@@ -218,6 +218,8 @@ public class ServerRequest {
         @Override
         protected DataProvider doInBackground(Void... params) {
 
+            //The data tu send must be in the form of a List of <NameValuePairs>, hence the list even
+            //if only one argument is posted
             ArrayList<NameValuePair> dataToSend = new ArrayList<>();
 
             dataToSend.add(new BasicNameValuePair("project_id", project_id));
@@ -269,7 +271,8 @@ public class ServerRequest {
             return projectToAdd;
         }
 
-        //finsh the background task and pass te stored data in an object to the callback function
+        //finsh the background task and pass the stored data in an object to the callback function
+        //this task is automatically called after doInBackground() is finished
         @Override
         protected void onPostExecute(DataProvider projectToAdd) {
             progressDialog.dismiss();
@@ -280,86 +283,100 @@ public class ServerRequest {
     }
 
 
-
-public class fetchProjectContentAsyncTask extends AsyncTask<Void, Void, ArrayList<Transaction>> {
-    String project_id;
-    GetTransactionCallback transactionCallback;
-
-    public fetchProjectContentAsyncTask(String project_id, GetTransactionCallback transactionCallback) {
-        this.transactionCallback = transactionCallback;
-        this.project_id = project_id;
-
-    }
-
-    @Override
-    protected ArrayList<Transaction> doInBackground(Void... params) {
-
-        ArrayList<NameValuePair> dataToSend = new ArrayList<>();
-
-        dataToSend.add(new BasicNameValuePair("project_id", project_id));
-        Log.e("sending project ID: ", project_id);
+    //Bakground task to fetch project content
+    public class fetchProjectContentAsyncTask extends AsyncTask<Void, Void, ArrayList<Transaction>> {
+        String project_id;
+        GetTransactionCallback transactionCallback;
 
 
-        HttpParams httpRequestParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
-        HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+        //constructor
+        public fetchProjectContentAsyncTask(String project_id, GetTransactionCallback transactionCallback) {
+            this.transactionCallback = transactionCallback;
+            this.project_id = project_id;
 
-        HttpClient client = new DefaultHttpClient(httpRequestParams);
-        HttpPost post = new HttpPost(SERVER_ADDRESS + "FetchProjectContent.php");
-
-        ArrayList<Transaction> transactions=new ArrayList<>();
-
-        try {
-            post.setEntity(new UrlEncodedFormEntity(dataToSend));
-            HttpResponse httpResponse = client.execute(post);
-
-            HttpEntity entity = httpResponse.getEntity();
-            String result = EntityUtils.toString(entity);
-            Log.e("jsonAnswer: ", result);
-
-            //Create JSON object to store handle recieved data
-            JSONArray jsonArray = new JSONArray(result);
-            JSONObject jsonObject;
-
-            //Chack if server did not return error
-            if (jsonArray.getJSONObject(0).has("fail")){
-                Log.e(TAG,"jsonFail");
-                transactions.clear();
-            } else {
-                for(int i = 0; i<jsonArray.length(); i++) {
-                    jsonObject = jsonArray.getJSONObject(i);
-
-                    //Set variable values by extracting data from JSON object, based on keys defined in php-file
-                    String person = jsonObject.getString("person");
-                    String project_id = jsonObject.getString("project_id");
-                    String amount = jsonObject.getString("amount");
-                    String object = jsonObject.getString("object");
-
-                    transactions.add(new Transaction(project_id, person, amount, object));
-                    //String project_currency = jsonObject.getString("currency");
-
-                    Log.e(TAG, "Transaction in list:\nID: "+transactions.get(i).projectId+ "\nName: "+transactions.get(i).person
-                            +"\nAmount: "+transactions.get(i).amount+"\n Object: "+transactions.get(i).object);
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d("ServerRequest: ", "try failed");
         }
 
-        //Return dhe recieved data as an object
-        return transactions;
-    }
+        //Background task that runs on separate thread
+        @Override
+        protected ArrayList<Transaction> doInBackground(Void... params) {
 
-    //finsh the background task and pass te stored data in an object to the callback function
-    @Override
-    protected void onPostExecute(ArrayList<Transaction> transactions) {
-        progressDialog.dismiss();
-        transactionCallback.done(transactions);
-        super.onPostExecute(transactions);
-    }
+            //The data tu send must be in the form of a List of <NameValuePairs>, hence the list even
+            //if only one argument is posted
+            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
 
-}
+            //Add the data to send
+            dataToSend.add(new BasicNameValuePair("project_id", project_id));
+            Log.e("sending project ID: ", project_id);
+
+            //Create http parameters to send
+            HttpParams httpRequestParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+
+            //Create http client
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+            HttpPost post = new HttpPost(SERVER_ADDRESS + "FetchProjectContent.php");
+
+            ArrayList<Transaction> transactions=new ArrayList<>();
+
+            try {
+                post.setEntity(new UrlEncodedFormEntity(dataToSend));
+                HttpResponse httpResponse = client.execute(post);
+
+                HttpEntity entity = httpResponse.getEntity();
+                String result = EntityUtils.toString(entity);
+                Log.e("jsonAnswer: ", result);
+
+                //Create JSON array to handle recieved data
+                JSONArray jsonArray = new JSONArray(result);
+                //JSON object to use as temp variable when extracting data from JSON array
+                JSONObject jsonObject;
+
+                //Chack if server did not return error
+                if (jsonArray.getJSONObject(0).has("fail")){
+                    Log.e(TAG,"jsonFail");
+                    transactions.clear();
+
+                } else {
+                    //Iterate through JSON array to extract and save all transactions
+                    for(int i = 0; i<jsonArray.length(); i++) {
+                        jsonObject = jsonArray.getJSONObject(i);
+
+                        //Set variable values by extracting data from JSON object, based on keys defined in php-file
+                        String person = jsonObject.getString("person");
+                        String project_id = jsonObject.getString("project_id");
+                        String amount = jsonObject.getString("amount");
+                        String object = jsonObject.getString("object");
+
+                        transactions.add(new Transaction(project_id, person, amount, object));
+
+                    /* Debug Text
+                    Log.e(TAG, "Transaction in list:\nID: "+transactions.get(i).projectId+ "\nName: "+transactions.get(i).person
+                            +"\nAmount: "+transactions.get(i).amount+"\n Object: "+transactions.get(i).object);
+                    */
+                    }
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("ServerRequest: ", "try failed");
+                transactions.clear();
+            }
+
+            //Return the recieved data as a list of transactions
+            return transactions;
+        }
+
+        //finsh the background task and pass the stored data in a list to the callback function
+        //this task is automatically called after doInBackground() is finished
+        @Override
+        protected void onPostExecute(ArrayList<Transaction> transactions) {
+            progressDialog.dismiss();
+            transactionCallback.done(transactions);
+            super.onPostExecute(transactions);
+        }
+
+    }
 }
 
