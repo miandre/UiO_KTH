@@ -99,6 +99,7 @@ public class ProjectView extends Activity implements View.OnClickListener {
         Intent intent = new Intent(this,ProjectContentView.class);
         intent.putExtra("project_id", position);
         startActivity(intent);
+        finish();
     }
 
     /**

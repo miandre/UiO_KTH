@@ -163,6 +163,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
                 Intent intent = new Intent(CreateProject.this,ProjectContentView.class);
                 intent.putExtra("project_id", projectPosition);
                 startActivity(intent);
+                finish();
             }
 
             @Override
