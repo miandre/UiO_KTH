@@ -1,7 +1,8 @@
-package nu.geeks.uio_kth;
+package nu.geeks.uio_kth.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -21,10 +22,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
+import nu.geeks.uio_kth.Database.GetProjectCallback;
+import nu.geeks.uio_kth.Database.GetTransactionCallback;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
+import nu.geeks.uio_kth.Database.ServerRequest;
 import nu.geeks.uio_kth.Database.TransactionsDbHelper;
+import nu.geeks.uio_kth.Objects.Algorithms;
+import nu.geeks.uio_kth.Objects.DataProvider;
+import nu.geeks.uio_kth.Objects.Payment;
+import nu.geeks.uio_kth.Objects.Person;
+import nu.geeks.uio_kth.R;
+import nu.geeks.uio_kth.Objects.Transaction;
+import nu.geeks.uio_kth.Views.PopupViews;
 
 /**
  * Created by Hannes on 2016-02-19.
@@ -40,7 +50,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     SQLiteDatabase sqLiteDatabase;
     Cursor cursorProject, cursorContent;
 
-    TextView projectName, totalExpenses;
+    TextView projectName, totalExpenses, tv_by_who, tv_what, tv_how_much;
 
 
     ArrayList<Transaction> transactions; //This holds all the transactions.
@@ -49,7 +59,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
 
     ListView listView;
-    Button add_transaction;
+    Button add_transaction, bShare, calculate;
     Typeface caviarBold;
 
 
@@ -62,16 +72,20 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         setContentView(R.layout.activity_project_content);
 
-        //Get the extras that contain the id from the main screen.
+        caviarBold = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
+
+        //Get the extras that contain the id (actually cursor position) from the main screen.
         Bundle b = getIntent().getExtras();
         projectPosition = b.getInt("project_id");
 
         projectNameString = getName(projectPosition);
 
-        caviarBold = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
-
         projectName = (TextView) findViewById(R.id.tvProjectName); //Lol naming convention.
         totalExpenses = (TextView) findViewById(R.id.tv_total_expences);
+
+
+        // font
+
         totalExpenses.setTypeface(caviarBold);
         totalExpenses.setTextColor(Color.WHITE);
 
@@ -79,16 +93,45 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         projectName.setText(projectNameString);
         projectName.setTextColor(Color.WHITE);
 
-        readTransactions();
-        fillPersonList();
-
-        setListView();
 
         add_transaction = (Button) findViewById(R.id.bt_add_trans);
         add_transaction.setOnClickListener(this);
 
+        bShare = (Button) findViewById(R.id.bShare2);
+        bShare.setOnClickListener(this);
+
+        calculate = (Button) findViewById(R.id.bt_calculate);
+        calculate.setOnClickListener(this);
+
+        getOnlineData();
+
+        //readTransactions();
+        //fillPersonList();
+        //setListView();
+
     }
 
+    //Retreive projet content from online service
+    private void getOnlineData() {
+
+        //Create service request
+        ServerRequest serverRequest = new ServerRequest(this);
+        serverRequest.fetchProjectContentInBackground(projectId, new GetTransactionCallback() {
+            @Override
+            public void done(ArrayList<Transaction> onlineTransactions) {
+                //reference online data to lokal transaction list
+                transactions = onlineTransactions;
+
+                //Update lists of persons
+                fillPersonList();
+                //Create/set the list view
+                setListView();
+            }
+        });
+    }
+
+
+    // expenses list (totals)
     private void setListView() {
         listView = (ListView) findViewById(R.id.lv_persons);
 
@@ -110,7 +153,6 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         };
         listView.setAdapter(personArrayAdapter);
         update();
-
 
         listView.setOnItemClickListener(this);
     }
@@ -135,9 +177,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     }
 
 
-
     private String getName(int projectPosition){
-
 
         ProjectDbHelper dbHelper = new ProjectDbHelper(getApplicationContext());
         sqLiteDatabase = dbHelper.getReadableDatabase();
@@ -150,8 +190,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
 
 
-
-
+    // read the expenses
     private void readTransactions(){
 
         transactionsDbHelper = new TransactionsDbHelper(this);
@@ -175,16 +214,16 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
     }
 
-    public void addTransaction(String amount, String object, String by){
-        Transaction transaction = new Transaction(projectId, by, amount, object);
+    public void addTransaction(Transaction transaction){
+
         transactionsDbHelper = new TransactionsDbHelper(this);
         sqLiteDatabase = transactionsDbHelper.getWritableDatabase();
-        transactionsDbHelper.addInformation(projectId, by, amount, object, sqLiteDatabase);
+        transactionsDbHelper.addInformation(transaction, sqLiteDatabase);
         transactions.add(transaction);
 
         boolean isInPersons = false;
         for(Person p : persons){
-            if(p.isSame(by)){
+            if(p.isSame(transaction.person)){
                 p.amount += transaction.amount;
                 isInPersons = true;
             }
@@ -192,9 +231,24 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         if(!isInPersons) persons.add(new Person(transaction.person, transaction.amount));
         update();
+        transactionsDbHelper.close();
+        ServerRequest serverRequest = new ServerRequest(this);
+        serverRequest.storeTransactionDataInBackground(transaction, new GetProjectCallback() {
+            @Override
+            public void done(int projectPosition) {
+
+            }
+
+            @Override
+            public void done(DataProvider projectToAdd) {
+
+            }
+        });
+        update();
     }
 
-
+    // recount total expenses (all people), make sure listview is up to date
+    // called when adding expenses and when initializing the activity
     private void update(){
 
         float total = 0;
@@ -219,63 +273,142 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.bt_add_trans:
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogLayout = inflater.inflate(R.layout.add_transaction, null);
-                final AlertDialog builder = new AlertDialog.Builder(this).create();
-                builder.setView(dialogLayout);
-
-                //Initialize buttons end edittexts.
-                Button ok = (Button) dialogLayout.findViewById(R.id.bt_ok_add_trans);
-                Button cancel = (Button) dialogLayout.findViewById(R.id.bt_cancel_trans);
-                String[] names = getNameList();
-                final EditText add_trans_object, add_trans_amount;
-                final AutoCompleteTextView add_trans_by_who;
-                final ArrayAdapter<String> personAutoAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
-
-                add_trans_by_who = (AutoCompleteTextView) dialogLayout.findViewById(R.id.et_by_who);
-                add_trans_object = (EditText) dialogLayout.findViewById(R.id.et_object);
-                add_trans_amount = (EditText) dialogLayout.findViewById(R.id.et_amount);
-                add_trans_by_who.setAdapter(personAutoAdapter);
-                add_trans_by_who.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_trans_by_who.showDropDown();
-                    }
-                });
-                add_trans_by_who.setThreshold(1);
-
-
-                ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String amount = add_trans_amount.getText().toString();
-                        String object = add_trans_object.getText().toString();
-                        String byWho = add_trans_by_who.getText().toString();
-                        if (amount.equals("") || object.equals("") || byWho.equals("")){
-                            Toast.makeText(getApplicationContext(), "You have to add something", Toast.LENGTH_LONG).show();
-                            Log.e(TAG, "okButton failed");
-                        }else{
-                            Log.e(TAG, "okButton OK");
-                            addTransaction(amount, object, byWho);
-                            builder.dismiss();
-                        }
-                    }
-                });
-
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder.dismiss();
-                    }
-                });
-
-                builder.show();
+                openAddTransactionPopup();
+                break;
+            case R.id.bShare2:
+                openShareView();
+                break;
+            case R.id.bt_calculate:
+                openCalculatePopup();
                 break;
 
         }
     }
 
+    private void openCalculatePopup() {
+        //Calculate the debts
+        Algorithms algorithms = new Algorithms();
+        ArrayList<Payment> payments = algorithms.calculatePayments(persons);
+
+        //Create a string of all payments.
+        String pay = "";
+        for(Payment p : payments){
+            pay += p.from + " should pay " + p.to + " " + p.amount + "\n";
+        }
+        PopupViews.PersonalExpensesView(this, caviarBold, pay);
+    }
+
+    //Wanted to do this as a static method in PopupViews, but since the addbutton calls another
+    private void openAddTransactionPopup() {
+        // make popup view
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.add_transaction, null);
+        final AlertDialog builder = new AlertDialog.Builder(this).create();
+        builder.setView(dialogLayout);
+
+        tv_by_who = (TextView) dialogLayout.findViewById(R.id.tv_by_who);
+        tv_what = (TextView) dialogLayout.findViewById(R.id.tv_what);
+        tv_how_much = (TextView) dialogLayout.findViewById(R.id.tv_how_much);
+
+        tv_by_who.setTypeface(caviarBold);
+        tv_what.setTypeface(caviarBold);
+        tv_how_much.setTypeface(caviarBold);
+
+        //Initialize buttons end edittexts.
+        Button ok = (Button) dialogLayout.findViewById(R.id.bt_ok_add_trans);
+        Button cancel = (Button) dialogLayout.findViewById(R.id.bt_cancel_trans);
+        String[] names = getNameList();
+        final EditText add_trans_object, add_trans_amount;
+        final AutoCompleteTextView add_trans_by_who;
+        final ArrayAdapter<String> personAutoAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
+
+        add_trans_by_who = (AutoCompleteTextView) dialogLayout.findViewById(R.id.et_by_who);
+        add_trans_by_who.setTypeface(caviarBold);
+
+        add_trans_object = (EditText) dialogLayout.findViewById(R.id.et_object);
+        add_trans_object.setTypeface(caviarBold);
+
+        add_trans_amount = (EditText) dialogLayout.findViewById(R.id.et_amount);
+        add_trans_amount.setTypeface(caviarBold);
+
+
+
+        // auto completion
+        //Remove hint when object is focused
+        add_trans_by_who.setAdapter(personAutoAdapter);
+        add_trans_by_who.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_trans_by_who.setHint("");
+                add_trans_by_who.showDropDown();
+            }
+        });
+        add_trans_by_who.setThreshold(1);
+
+        //Remove hint when object is focused
+        add_trans_object.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    add_trans_object.setHint("");
+                } else {
+
+                    add_trans_object.setHint("What did you buy?");
+                }
+            }
+        });
+
+        //Remove hint when object is focused
+        add_trans_amount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    add_trans_amount.setHint("");
+                }else{
+                    add_trans_amount.setHint("What did it cost?");
+                }
+            }
+        });
+
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // get text fields
+                String amount = add_trans_amount.getText().toString();
+                String object = add_trans_object.getText().toString();
+                String byWho = add_trans_by_who.getText().toString();
+
+                // verify not empty
+                if (amount.equals("") || object.equals("") || byWho.equals("")){
+                    Toast.makeText(getApplicationContext(), "You have to add something", Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "okButton failed");
+                }else{
+                    Log.e(TAG, "okButton OK");
+                    // add expense
+                    Transaction transaction = new Transaction(projectId, byWho, amount, object);
+                    addTransaction(transaction);
+                    builder.dismiss();
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
+    public void openShareView(){
+        PopupViews.ShareView(this, caviarBold, projectId);
+    }
+
     @Override
+    // list for one persons expenses
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         String name = persons.get(position).name;
@@ -288,23 +421,21 @@ public class ProjectContentView extends Activity implements View.OnClickListener
             }
         }
 
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogLayout = inflater.inflate(R.layout.single_person_transactions, null);
-        final AlertDialog builder = new AlertDialog.Builder(this).create();
-        builder.setView(dialogLayout);
 
-        Button ok = (Button) dialogLayout.findViewById(R.id.tv_single_person_ok);
-        TextView text = (TextView)dialogLayout.findViewById(R.id.tv_single_person_transactions);
-        text.setTypeface(caviarBold);
-        text.setTextColor(Color.WHITE);
-        text.setText(msg);
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                builder.dismiss();
-            }
-        });
 
-        builder.show();
+        // open as popup
+        PopupViews.PersonalExpensesView(this, caviarBold, msg);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        viewProjects();
+    }
+
+    public void viewProjects(){
+
+        startActivity(new Intent(this, ProjectView.class));
+        finish();
     }
 }

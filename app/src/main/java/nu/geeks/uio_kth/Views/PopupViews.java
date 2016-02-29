@@ -76,6 +76,7 @@ public class PopupViews {
         }
     }
 
+
     public static void PersonalExpensesView(Activity context, Typeface font, String msg){
         LayoutInflater inflater = context.getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.single_person_transactions, null);
