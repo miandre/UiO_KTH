@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Name"
-        android:id="@+id/textView" />
+        android:id="@+id/tvChatName" />
 
     <TextView
         android:layout_width="match_parent"

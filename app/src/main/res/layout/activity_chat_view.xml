@@ -22,11 +22,17 @@
         android:shadowDy="1"
         android:shadowRadius="5"/>
 
+    <AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etName"
+        android:hint="Name" />
+
     <ListView
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:id="@+id/lv_persons"
+        android:id="@+id/lv_chat"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.45"
         android:textColor="#FFFFFF"
@@ -43,14 +49,13 @@
         android:layout_gravity="center_horizontal">
 
         <Button
-            android:layout_width="76dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/bBack"
-            android:text="SEND"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="false"
+            android:layout_width="89dp"
+            android:layout_height="76dp"
+            android:id="@+id/bt_send_msg"
+            android:background="@drawable/check"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
- />
+            android:layout_alignParentStart="false" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -65,7 +70,6 @@
             android:layout_toStartOf="@+id/bBack"
             android:hint="Enter Your Message Here!"
             android:background="#FFFFFF"
-
             android:nestedScrollingEnabled="true"
              />
 

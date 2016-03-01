@@ -453,6 +453,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     public void viewChat(){
         Intent intent = new Intent(this,ChatView.class);
         intent.putExtra("project_id",projectId);
+        intent.putExtra("project_names", getNameList());
         startActivity(intent);
         //finish();
     }
