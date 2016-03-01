@@ -98,19 +98,18 @@ public class ChatView extends Activity implements View.OnClickListener{
 
     private void createListView(){
         listView = (ListView) findViewById(R.id.lv_chat);
-        chatMessageAdapter = new ArrayAdapter<ChatMessage>(this,android.R.layout.simple_list_item_2, android.R.id.text1, chatContent){
+        chatMessageAdapter = new ArrayAdapter<ChatMessage>(this,R.layout.list_chat, R.id.tvChatMessage, chatContent){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
 
-                TextView name = (TextView) v.findViewById(android.R.id.text2);
-                TextView msg = (TextView) v.findViewById(android.R.id.text1);
+                TextView name = (TextView) v.findViewById(R.id.tvChatName);
+                TextView msg = (TextView) v.findViewById(R.id.tvChatMessage);
                 name.setTypeface(caviar);
                 msg.setTypeface(caviar);
                 name.setText(chatContent.get(position).name);
                 msg.setText(chatContent.get(position).message);
-                name.setTextColor(Color.WHITE);
-                msg.setTextColor(Color.WHITE);
+
                 return v;
             }
         };

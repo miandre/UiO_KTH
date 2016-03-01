@@ -2,14 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Name"
-        android:id="@+id/tvChatName" />
+        android:id="@+id/tvChatName"
+        android:shadowColor="#4d4d4d"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:textColor="#000000"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -17,5 +24,11 @@
         android:text="Chat Message"
         android:id="@+id/tvChatMessage"
         android:gravity="left"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:textSize="15dp"
+        />
 </LinearLayout>
