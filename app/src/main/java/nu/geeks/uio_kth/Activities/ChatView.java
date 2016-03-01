@@ -51,6 +51,8 @@ public class ChatView extends Activity implements View.OnClickListener{
     EditText etMessage;
     AutoCompleteTextView etName;
 
+    CountDownTimer timer;
+
 
 
     @Override
@@ -80,7 +82,7 @@ public class ChatView extends Activity implements View.OnClickListener{
 
         setOnFocusListeners();
 
-        CountDownTimer timer = new CountDownTimer(10000, 3000) {
+        timer = new CountDownTimer(10000, 3000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 addChatMessage(new ChatMessage("", "", projectId));
@@ -176,6 +178,12 @@ public class ChatView extends Activity implements View.OnClickListener{
             etMessage.setText("");
             return msg;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        timer.cancel();
+        super.onPause();
     }
 
     @Override
