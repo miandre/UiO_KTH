@@ -135,7 +135,7 @@ public class ChatView extends Activity implements View.OnClickListener{
 
     private ChatMessage createChatMessage(){
 
-        if(etName.getText().toString().equals("") && etMessage.getText().toString().equals("")){
+        if(etName.getText().toString().equals("") || etMessage.getText().toString().equals("")){
             Toast.makeText(this, "You have to fill in both name and message", Toast.LENGTH_LONG);
             return null;
         }else{
@@ -153,6 +153,8 @@ public class ChatView extends Activity implements View.OnClickListener{
 
                 if(msg != null){
                     addChatMessage(msg);
+                }else{
+                    addChatMessage(new ChatMessage("","",projectId));
                 }
 
                 break;
