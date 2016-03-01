@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import nu.geeks.uio_kth.Database.GetChatCallback;
@@ -163,7 +164,15 @@ public class ChatView extends Activity implements View.OnClickListener{
         if(etName.getText().toString().equals("") || etMessage.getText().toString().equals("")){
             return null;
         }else{
-            ChatMessage msg = new ChatMessage(etName.getText().toString(), etMessage.getText().toString(), projectId);
+
+            Calendar c = Calendar.getInstance();
+
+
+            ChatMessage msg = new ChatMessage(etName.getText().toString() + " " +
+                    c.get(Calendar.MONTH) + "/"
+                    + c.get(Calendar.DAY_OF_MONTH)
+                    + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE)
+                    , etMessage.getText().toString(), projectId);
             etMessage.setText("");
             return msg;
         }
