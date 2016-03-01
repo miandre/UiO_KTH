@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +79,17 @@ public class ChatView extends Activity implements View.OnClickListener{
 
         setOnFocusListeners();
 
+        CountDownTimer timer = new CountDownTimer(10000, 3000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                addChatMessage(new ChatMessage("", "", projectId));
+            }
+
+            @Override
+            public void onFinish() {
+                start();
+            }
+        }.start();
 
     }
 
@@ -162,9 +176,9 @@ public class ChatView extends Activity implements View.OnClickListener{
                 ChatMessage msg = createChatMessage();
                 if(msg != null){
                     addChatMessage(msg);
-                }else{
-                    addChatMessage(new ChatMessage("","",projectId));
                 }
+                    addChatMessage(new ChatMessage("","",projectId));
+                chatMessageAdapter.notifyDataSetChanged();
                 break;
         }
 

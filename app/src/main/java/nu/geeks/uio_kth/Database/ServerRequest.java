@@ -67,7 +67,7 @@ public class ServerRequest {
 
     }
     public void updateChatInBackground(ChatMessage chatMessage, GetChatCallback chatCallback) {
-        progressDialog.show();
+        //progressDialog.show();
 
         new chatUpdateAsyncTask(chatMessage, chatCallback).execute();
 
@@ -456,8 +456,8 @@ public class ServerRequest {
                         chatContent.add(new ChatMessage(name,message,project_id));
 
                      //Debug Text
-                    Log.e(TAG, "Chat :\nID: "+chatContent.get(i).project_id+ "\nName: "+chatContent.get(i).name
-                            +"\nMessage: "+chatContent.get(i).message);
+                  //  Log.e(TAG, "Chat :\nID: "+chatContent.get(i).project_id+ "\nName: "+chatContent.get(i).name
+                    //        +"\nMessage: "+chatContent.get(i).message);
 
                     }
 
