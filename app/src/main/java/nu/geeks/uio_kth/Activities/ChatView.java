@@ -178,14 +178,11 @@ public class ChatView extends Activity implements View.OnClickListener{
             public void done(ArrayList<ChatMessage> newChatContent) {
                 chatContent = newChatContent;
 
-                if(!listViewInitialized){
-                    createListView();
-                    listViewInitialized = true;
-                }
 
-                if(chatMessageAdapter != null) {
+                    createListView();
+                    chatMessageAdapter.notifyDataSetChanged();
                     listView.setSelection(chatContent.size()-1);
-                }
+
             }
         });
 
