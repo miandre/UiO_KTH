@@ -18,9 +18,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import nu.geeks.uio_kth.Database.GetChatCallback;
 import nu.geeks.uio_kth.Database.GetTransactionCallback;
@@ -166,13 +174,12 @@ public class ChatView extends Activity implements View.OnClickListener{
             return null;
         }else{
 
-            Calendar c = Calendar.getInstance();
+            SimpleDateFormat sdt = new SimpleDateFormat("LLL 1 - HH:mm", Locale.getDefault());
 
+            Log.e(TAG, "Date: " + sdt.format(new Date(System.currentTimeMillis())));
 
-            ChatMessage msg = new ChatMessage(etName.getText().toString() + " " +
-                    c.get(Calendar.MONTH) + "/"
-                    + c.get(Calendar.DAY_OF_MONTH)
-                    + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE)
+            ChatMessage msg = new ChatMessage(etName.getText().toString() + "   " +
+                    sdt.format(new Date(System.currentTimeMillis()))
                     , etMessage.getText().toString(), projectId);
             etMessage.setText("");
             return msg;
