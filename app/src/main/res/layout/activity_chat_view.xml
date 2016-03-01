@@ -67,7 +67,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/bBack"
+            android:layout_toStartOf="@+id/bt_send_msg"
             android:hint="Enter Your Message Here!"
             android:background="#FFFFFF"
             android:nestedScrollingEnabled="true"

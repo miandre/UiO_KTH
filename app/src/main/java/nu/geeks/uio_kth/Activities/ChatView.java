@@ -72,6 +72,8 @@ public class ChatView extends Activity implements View.OnClickListener{
     }
 
     private void fillListView() {
+
+
         chatMessageAdapter = new ArrayAdapter<ChatMessage>(this,android.R.layout.simple_list_item_2, android.R.id.text1, chatContent){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -88,6 +90,7 @@ public class ChatView extends Activity implements View.OnClickListener{
                 return v;
             }
         };
+
         listView.setAdapter(chatMessageAdapter);
         chatMessageAdapter.notifyDataSetChanged();
 
