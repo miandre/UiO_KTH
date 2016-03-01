@@ -47,8 +47,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/bBack"
             android:text="SEND"
-            android:layout_alignTop="@+id/bChat"
-
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="false"
             android:layout_alignParentEnd="true"
@@ -59,7 +57,8 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/editText"
+            android:gravity="top"
+            android:id="@+id/etMessage"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"

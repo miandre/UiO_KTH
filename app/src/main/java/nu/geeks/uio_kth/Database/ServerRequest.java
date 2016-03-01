@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.geeks.uio_kth.Objects.ChatMessage;
 import nu.geeks.uio_kth.Objects.DataProvider;
 import nu.geeks.uio_kth.Objects.Transaction;
 
@@ -65,6 +66,12 @@ public class ServerRequest {
         new storeTransactionDataAsyncTask(transaction, projectCallback).execute();
 
     }
+    public void updateChatInBackground(ChatMessage chatMessage, GetChatCallback chatCallback) {
+        progressDialog.show();
+
+        new chatUpdateAsyncTask(chatMessage, chatCallback).execute();
+
+    }
 
     //Method called to fetch project data. Opens e progress dialog and calls an Asynchronus background task.
     public void fetchProjectDataInBackground(String project_id, GetProjectCallback projectCallback){
@@ -79,6 +86,7 @@ public class ServerRequest {
         new fetchProjectContentAsyncTask(project_id, transactionCallback).execute();
 
     }
+
 
 
 
@@ -378,5 +386,107 @@ public class ServerRequest {
         }
 
     }
+
+    public class chatUpdateAsyncTask extends AsyncTask<Void, Void, ArrayList<ChatMessage>> {
+        ChatMessage chatMessage;
+        GetChatCallback chatCallback;
+
+
+        //constructor
+        public chatUpdateAsyncTask(ChatMessage chatMessage, GetChatCallback chatCallback) {
+            this.chatCallback = chatCallback;
+            this.chatMessage = chatMessage;
+
+        }
+
+        //Background task that runs on separate thread
+        @Override
+        protected ArrayList<ChatMessage> doInBackground(Void... params) {
+
+            //The data tu send must be in the form of a List of <NameValuePairs>, hence the list even
+            //if only one argument is posted
+            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+
+            //Add the data to send
+            dataToSend.add(new BasicNameValuePair("name", chatMessage.name));
+            dataToSend.add(new BasicNameValuePair("message", chatMessage.message));
+            dataToSend.add(new BasicNameValuePair("project_id", chatMessage.project_id));
+            Log.e("sending project ID: ", chatMessage.project_id);
+
+            //Create http parameters to send
+            HttpParams httpRequestParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+
+            //Create http client
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+            HttpPost post = new HttpPost(SERVER_ADDRESS + "UpdateChat.php");
+
+            ArrayList<ChatMessage> chatContent=new ArrayList<>();
+
+            try {
+                post.setEntity(new UrlEncodedFormEntity(dataToSend));
+                HttpResponse httpResponse = client.execute(post);
+
+                HttpEntity entity = httpResponse.getEntity();
+                String result = EntityUtils.toString(entity);
+                Log.e("jsonAnswer: ", result);
+
+                //Create JSON array to handle recieved data
+                JSONArray jsonArray = new JSONArray(result);
+                //JSON object to use as temp variable when extracting data from JSON array
+                JSONObject jsonObject;
+
+                //Chack if server did not return error
+                if (jsonArray.getJSONObject(0).has("fail")){
+                    Log.e(TAG,"jsonFail");
+                    chatContent.clear();
+
+                } else {
+                    //Iterate through JSON array to extract and save all transactions
+                    for(int i = 0; i<jsonArray.length(); i++) {
+                        jsonObject = jsonArray.getJSONObject(i);
+
+                        //Set variable values by extracting data from JSON object, based on keys defined in php-file
+                        String name = jsonObject.getString("name");
+                        String project_id = jsonObject.getString("project_id");
+                        String message = jsonObject.getString("message");
+
+
+                        chatContent.add(new ChatMessage(name,message,project_id));
+
+                     //Debug Text
+                    Log.e(TAG, "Chat :\nID: "+chatContent.get(i).project_id+ "\nName: "+chatContent.get(i).name
+                            +"\nMessage: "+chatContent.get(i).message);
+
+                    }
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("ServerRequest: ", "try failed");
+                chatContent.clear();
+            }
+
+            //Return the recieved data as a list of transactions
+            return chatContent;
+        }
+
+        //finsh the background task and pass the stored data in a list to the callback function
+        //this task is automatically called after doInBackground() is finished
+        @Override
+        protected void onPostExecute(ArrayList<ChatMessage> chatContent) {
+            progressDialog.dismiss();
+            chatCallback.done(chatContent);
+            super.onPostExecute(chatContent);
+        }
+
+    }
+
+
+
+
+
 }
 

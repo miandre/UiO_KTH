@@ -1,11 +1,16 @@
 package nu.geeks.uio_kth.Activities;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 
+import java.util.ArrayList;
+
+import nu.geeks.uio_kth.Objects.ChatMessage;
 import nu.geeks.uio_kth.R;
 
 /**
@@ -16,6 +21,11 @@ public class ChatView extends Activity implements View.OnClickListener{
     static final String TAG = "CHAT VIEW";
 
     private String projectId;
+    ArrayList<ChatMessage> chatContent;
+    ListView listView;
+
+    Button bSend;
+    EditText etMessage;
 
 
     @Override
@@ -28,8 +38,11 @@ public class ChatView extends Activity implements View.OnClickListener{
         Log.e(TAG, "Project ID: " + projectId);
     }
 
+
+
     @Override
     public void onClick(View v) {
 
     }
+
 }

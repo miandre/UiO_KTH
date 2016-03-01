@@ -104,6 +104,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         calculate.setOnClickListener(this);
 
         bBack = (Button) findViewById(R.id.bBack);
+        bBack.setOnClickListener(this);
 
         bChat = (Button) findViewById(R.id.bChat);
         bChat.setOnClickListener(this);
@@ -448,11 +449,12 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         startActivity(new Intent(this, ProjectView.class));
         finish();
     }
+
     public void viewChat(){
         Intent intent = new Intent(this,ChatView.class);
         intent.putExtra("project_id",projectId);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
 }
