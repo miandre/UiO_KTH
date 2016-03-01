@@ -59,7 +59,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
 
     ListView listView;
-    Button add_transaction, bShare, calculate, bBack;
+    Button add_transaction, bShare, calculate, bBack, bChat;
     Typeface caviarBold;
 
 
@@ -104,7 +104,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         calculate.setOnClickListener(this);
 
         bBack = (Button) findViewById(R.id.bBack);
-        bBack.setOnClickListener(this);
+
+        bChat = (Button) findViewById(R.id.bChat);
+        bChat.setOnClickListener(this);
 
         getOnlineData();
 
@@ -287,6 +289,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
             case R.id.bBack:
                 viewProjects();
                 break;
+            case R.id.bChat:
+                viewChat();
+                break;
         }
     }
 
@@ -443,4 +448,11 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         startActivity(new Intent(this, ProjectView.class));
         finish();
     }
+    public void viewChat(){
+        Intent intent = new Intent(this,ChatView.class);
+        intent.putExtra("project_id",projectId);
+        startActivity(intent);
+        finish();
+    }
+
 }

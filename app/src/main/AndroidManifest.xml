@@ -24,8 +24,12 @@
         <activity
             android:name=".Activities.ProjectContentView"
             android:label="Project Content View"></activity>
+        <activity
+            android:name=".Activities.ChatView"
+            android:label="Project Chat"></activity>
         <activity android:name=".Activities.ImportProjectView"
             android:label="Import Project to U.IO">
+
             <intent-filter>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
