@@ -31,6 +31,7 @@ import nu.geeks.uio_kth.R;
 public class ChatView extends Activity implements View.OnClickListener{
 
     static final String TAG = "CHAT VIEW";
+    final String HINT = "Enter message here!";
 
     private String projectId;
     ArrayList<ChatMessage> chatContent;
@@ -64,6 +65,7 @@ public class ChatView extends Activity implements View.OnClickListener{
         etName = (AutoCompleteTextView) findViewById(R.id.etName);
 
         bSend.setOnClickListener(this);
+        bSend.setBackgroundResource(R.drawable.refresh);
 
 
         setOnFocusListeners();
@@ -103,10 +105,18 @@ public class ChatView extends Activity implements View.OnClickListener{
                 if (hasFocus) {
                     etMessage.setHint("");
                 } else {
-                    etMessage.setHint("Enter message here!");
+                    etMessage.setHint(HINT);
                 }
+                if(etMessage.getText().toString().equals(HINT) || etMessage.getText().toString().equals("")){
+                    bSend.setBackgroundResource(R.drawable.refresh);
+                }else{
+                    bSend.setBackgroundResource(R.drawable.check);
+                }
+
             }
         });
+
+
 
         etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

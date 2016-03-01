@@ -16,6 +16,7 @@
         android:textSize="30dp"
         android:textAllCaps="true"
         android:textStyle="bold"
+
         android:textColor="#FFFFFF"
         android:shadowColor="#000000"
         android:shadowDx="1"
@@ -26,15 +27,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etName"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         android:hint="Name" />
 
     <ListView
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="192dp"
         android:id="@+id/lv_chat"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.45"
         android:textColor="#FFFFFF"
         android:shadowColor="#000000"
         android:shadowDx="1"
@@ -60,7 +62,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
+            android:singleLine="true"
             android:ems="10"
             android:gravity="top"
             android:id="@+id/etMessage"
@@ -69,6 +71,7 @@
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/bt_send_msg"
             android:hint="Enter Your Message Here!"
+            android:imeOptions="actionDone"
             android:background="#FFFFFF"
             android:nestedScrollingEnabled="true"
              />
