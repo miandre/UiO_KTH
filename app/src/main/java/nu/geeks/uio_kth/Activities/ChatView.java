@@ -55,7 +55,6 @@ public class ChatView extends Activity implements View.OnClickListener{
         projectId = b.getString("project_id");
         nameList = b.getStringArray("project_names");
         Log.e(TAG, "Project ID: " + projectId);
-        listView = (ListView) findViewById(R.id.lv_chat);
         caviar = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
         getChatContent();
 
@@ -72,21 +71,22 @@ public class ChatView extends Activity implements View.OnClickListener{
     }
 
     private void fillListView() {
+        listView = (ListView) findViewById(R.id.lv_chat);
 
-
-        chatMessageAdapter = new ArrayAdapter<ChatMessage>(this,android.R.layout.simple_list_item_2, android.R.id.text1, chatContent){
+        chatMessageAdapter = new ArrayAdapter<ChatMessage>(this, android.R.layout.simple_list_item_2, android.R.id.text1, chatContent){
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, ViewGroup parent){
                 View v = super.getView(position, convertView, parent);
 
-                TextView name = (TextView) findViewById(android.R.id.text2);
-                TextView msg = (TextView) findViewById(android.R.id.text1);
-                name.setTypeface(caviar);
-                msg.setTypeface(caviar);
-                name.setText(chatContent.get(position).name);
-                msg.setText(chatContent.get(position).message);
-                name.setTextColor(Color.WHITE);
-                msg.setTextColor(Color.WHITE);
+                    TextView name = (TextView) v.findViewById(android.R.id.text2);
+                    TextView msg = (TextView) v.findViewById(android.R.id.text1);
+                    name.setTypeface(caviar);
+                    msg.setTypeface(caviar);
+                    name.setText(chatContent.get(position).name);
+                    msg.setText(chatContent.get(position).message);
+                    name.setTextColor(Color.WHITE);
+                    msg.setTextColor(Color.WHITE);
+
                 return v;
             }
         };
@@ -150,9 +150,11 @@ public class ChatView extends Activity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.bt_send_msg:
                 ChatMessage msg = createChatMessage();
+
                 if(msg != null){
                     addChatMessage(msg);
                 }
+
                 break;
         }
 
@@ -165,6 +167,7 @@ public class ChatView extends Activity implements View.OnClickListener{
             @Override
             public void done(ArrayList<ChatMessage> newChatContent) {
                 chatContent = newChatContent;
+                Log.e(TAG, "chatContent null: " + (chatContent == null));
                 fillListView();
             }
         });
@@ -179,6 +182,7 @@ public class ChatView extends Activity implements View.OnClickListener{
             @Override
             public void done(ArrayList<ChatMessage> newChatContent) {
                 chatContent = newChatContent;
+                Log.e(TAG, "chatContent null: " + (chatContent == null));
                 fillListView();
             }
         });
