@@ -39,6 +39,8 @@ public class ChatView extends Activity implements View.OnClickListener{
     String[] nameList;
     ListView listView;
 
+    boolean listViewInitialized;
+
     Typeface caviar;
 
     Button bSend;
@@ -58,7 +60,11 @@ public class ChatView extends Activity implements View.OnClickListener{
         Log.e(TAG, "Project ID: " + projectId);
         listView = (ListView) findViewById(R.id.lv_chat);
         caviar = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
-        getChatContent();
+        listViewInitialized = false;
+
+        addChatMessage(new ChatMessage("", "", projectId)); //Adding empty to update list
+
+
 
         bSend = (Button) findViewById(R.id.bt_send_msg);
         etMessage = (EditText) findViewById(R.id.etMessage);
@@ -73,8 +79,7 @@ public class ChatView extends Activity implements View.OnClickListener{
 
     }
 
-    private void fillListView() {
-
+    private void createListView(){
         listView = (ListView) findViewById(R.id.lv_chat);
         chatMessageAdapter = new ArrayAdapter<ChatMessage>(this,android.R.layout.simple_list_item_2, android.R.id.text1, chatContent){
             @Override
@@ -92,11 +97,10 @@ public class ChatView extends Activity implements View.OnClickListener{
                 return v;
             }
         };
-
         listView.setAdapter(chatMessageAdapter);
         chatMessageAdapter.notifyDataSetChanged();
-
     }
+
 
     private void setOnFocusListeners() {
         etMessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -104,17 +108,14 @@ public class ChatView extends Activity implements View.OnClickListener{
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     etMessage.setHint("");
+                    bSend.setBackgroundResource(R.drawable.check);
                 } else {
                     etMessage.setHint(HINT);
-                }
-                if(etMessage.getText().toString().equals(HINT) || etMessage.getText().toString().equals("")){
-                    bSend.setBackgroundResource(R.drawable.refresh);
-                }else{
-                    bSend.setBackgroundResource(R.drawable.check);
                 }
 
             }
         });
+
 
 
 
@@ -124,7 +125,7 @@ public class ChatView extends Activity implements View.OnClickListener{
                 if(hasFocus){
                     etName.setHint("");
                 }else{
-
+                    etName.setHint("Please enter a name");
                 }
             }
         });
@@ -146,7 +147,6 @@ public class ChatView extends Activity implements View.OnClickListener{
     private ChatMessage createChatMessage(){
 
         if(etName.getText().toString().equals("") || etMessage.getText().toString().equals("")){
-            Toast.makeText(this, "You have to fill in both name and message", Toast.LENGTH_LONG);
             return null;
         }else{
             ChatMessage msg = new ChatMessage(etName.getText().toString(), etMessage.getText().toString(), projectId);
@@ -177,24 +177,22 @@ public class ChatView extends Activity implements View.OnClickListener{
             @Override
             public void done(ArrayList<ChatMessage> newChatContent) {
                 chatContent = newChatContent;
-                fillListView();
+
+                if(!listViewInitialized){
+                    createListView();
+                    listViewInitialized = true;
+                }
+
+                if(chatMessageAdapter != null) {
+                    listView.setSelection(chatContent.size()-1);
+                }
             }
         });
 
-        chatMessageAdapter.notifyDataSetChanged();
+
 
     }
 
-    private void getChatContent() {
-        ServerRequest serverRequest = new ServerRequest(this);
-        serverRequest.updateChatInBackground(new ChatMessage("", "", projectId), new GetChatCallback() {
-            @Override
-            public void done(ArrayList<ChatMessage> newChatContent) {
-                chatContent = newChatContent;
-                fillListView();
-            }
-        });
-    }
 
 
 }

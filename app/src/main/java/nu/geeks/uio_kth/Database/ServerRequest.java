@@ -465,8 +465,8 @@ public class ServerRequest {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("ServerRequest: ", "try failed");
-                chatContent.clear();
+                Log.d("ServerRequest: ", "try failed chat");
+                //chatContent.clear();
             }
 
             //Return the recieved data as a list of transactions
