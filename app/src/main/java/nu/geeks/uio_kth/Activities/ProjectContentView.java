@@ -3,6 +3,7 @@ package nu.geeks.uio_kth.Activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import nu.geeks.uio_kth.Database.GetProjectCallback;
 import nu.geeks.uio_kth.Database.GetTransactionCallback;
@@ -63,15 +65,24 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     Button add_transaction, bShare, calculate, bBack, bChat;
     Typeface caviarBold;
 
-
     static final String TAG = "ContentView";
+    private final String LOCAL_STORAGE = "LOCALE_STORAGE";
+    static final String DEFAULT_USER = "default_user";
+
+
+    SharedPreferences localStorage;
+    SharedPreferences.Editor spEditor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        localStorage = this.getSharedPreferences(LOCAL_STORAGE,0);
+        spEditor = localStorage.edit();
         setContentView(R.layout.activity_project_content);
+
+
+        Log.e(TAG, Integer.toString(localStorage.getInt("Micke", 0)));
 
         caviarBold = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
 
@@ -338,7 +349,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         add_trans_by_who = (AutoCompleteTextView) dialogLayout.findViewById(R.id.et_by_who);
         add_trans_by_who.setTypeface(caviarBold);
-        add_trans_by_who.setText(User.getName());
+        add_trans_by_who.setText(localStorage.getString(DEFAULT_USER, ""));
 
         add_trans_object = (EditText) dialogLayout.findViewById(R.id.et_object);
         add_trans_object.setTypeface(caviarBold);
@@ -393,6 +404,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
                 String amount = add_trans_amount.getText().toString();
                 String object = add_trans_object.getText().toString();
                 String byWho = add_trans_by_who.getText().toString();
+
+                spEditor.putString(DEFAULT_USER,User.addName(byWho));
+                spEditor.commit();
 
                 // verify not empty
                 if (amount.equals("") || object.equals("") || byWho.equals("")){

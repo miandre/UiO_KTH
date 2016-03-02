@@ -1,6 +1,7 @@
 package nu.geeks.uio_kth.Activities;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -62,12 +63,22 @@ public class ChatView extends Activity implements View.OnClickListener{
 
     CountDownTimer timer;
 
+    private final String LOCAL_STORAGE = "LOCALE_STORAGE";
+    static final String DEFAULT_USER = "default_user";
+
+
+    SharedPreferences localStorage;
+    SharedPreferences.Editor spEditor;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_view);
+
+        localStorage = this.getSharedPreferences(LOCAL_STORAGE,0);
+        spEditor = localStorage.edit();
 
         Bundle b = getIntent().getExtras();
         projectId = b.getString("project_id");
@@ -89,7 +100,7 @@ public class ChatView extends Activity implements View.OnClickListener{
         bSend.setBackgroundResource(R.drawable.refresh);
 
 
-        etName.setText(User.getName());
+        etName.setText(localStorage.getString(DEFAULT_USER,""));
 
         setOnFocusListeners();
 
@@ -173,8 +184,8 @@ public class ChatView extends Activity implements View.OnClickListener{
 
     private ChatMessage createChatMessage(){
 
-        User.addName(etName.getText().toString());
-        Log.e(TAG,"addName(): "+etName.getText().toString());
+        spEditor.putString(DEFAULT_USER,User.addName(etName.getText().toString()));
+        spEditor.commit();
         if(etName.getText().toString().equals("") || etMessage.getText().toString().equals("")){
             return null;
         }else{

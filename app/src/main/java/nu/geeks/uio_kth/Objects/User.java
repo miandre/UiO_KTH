@@ -18,25 +18,22 @@ public class User extends Activity {
 
 
 
-
-
-
     private static Map<String,Integer> names = new HashMap<>();
 
 
-
-
-
-    public static void addName(String name){
-
-
+    public static String addName(String name){
 
         if(names.containsKey(name)){
             names.put(name,names.get(name)+1);
         }else names.put(name,1);
+
+
+        return getName();
+
+
     }
 
-    public static String getName(){
+    private static String getName(){
 
         if(!names.isEmpty()) {
             String retName = Collections.max(names.entrySet(), new Comparator<Map.Entry<String, Integer>>() {

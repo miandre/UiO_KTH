@@ -2,6 +2,7 @@ package nu.geeks.uio_kth.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
@@ -39,6 +40,10 @@ public class ProjectView extends Activity implements View.OnClickListener {
     Button bNewProject;                     //The new-project-button
     TextView tv_current_projects;           //The static text at the top of the screen
     Typeface caviarBold;                    //Typsnittet som används.
+    SharedPreferences localStorage;
+    SharedPreferences.Editor spEditor;
+    private final String LOCAL_STORAGE = "LOCALE_STORAGE";
+    private final String TAG = "PROJECT_VIEW";
 
     /**
      * Called by Android, instanziate all stuff.
@@ -50,6 +55,14 @@ public class ProjectView extends Activity implements View.OnClickListener {
 
         super.onCreate(savedInstanceState);                 //Always call super.
         setContentView(R.layout.activity_project_view);     //the layout (the xml in res/layout)
+
+        localStorage = this.getSharedPreferences(LOCAL_STORAGE,0);
+        spEditor = localStorage.edit();
+
+        //spEditor.clear();
+       //spEditor.commit();
+
+
 
         caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
 
@@ -95,7 +108,7 @@ public class ProjectView extends Activity implements View.OnClickListener {
         //Get the project ID.
         cursor.moveToPosition(position);
         String id = cursor.getString(2); //Id
-
+        Log.e(TAG, localStorage.getString("name", "NO NAME FOUND"));
         Intent intent = new Intent(this,ProjectContentView.class);
         intent.putExtra("project_id", position);
         startActivity(intent);
