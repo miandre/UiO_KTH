@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg2"
     android:weightSum="1"
+    android:focusableInTouchMode="true"
     android:paddingTop="15dp">
 
     <TextView

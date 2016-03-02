@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,23 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import nu.geeks.uio_kth.Database.GetChatCallback;
 import nu.geeks.uio_kth.Database.GetTransactionCallback;
@@ -47,6 +59,8 @@ public class ChatView extends Activity implements View.OnClickListener{
     EditText etMessage;
     AutoCompleteTextView etName;
 
+    CountDownTimer timer;
+
 
 
     @Override
@@ -76,24 +90,34 @@ public class ChatView extends Activity implements View.OnClickListener{
 
         setOnFocusListeners();
 
+        timer = new CountDownTimer(10000, 3000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                addChatMessage(new ChatMessage("", "", projectId));
+            }
+
+            @Override
+            public void onFinish() {
+                start();
+            }
+        }.start();
 
     }
 
     private void createListView(){
         listView = (ListView) findViewById(R.id.lv_chat);
-        chatMessageAdapter = new ArrayAdapter<ChatMessage>(this,android.R.layout.simple_list_item_2, android.R.id.text1, chatContent){
+        chatMessageAdapter = new ArrayAdapter<ChatMessage>(this,R.layout.list_chat, R.id.tvChatMessage, chatContent){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
 
-                TextView name = (TextView) v.findViewById(android.R.id.text2);
-                TextView msg = (TextView) v.findViewById(android.R.id.text1);
+                TextView name = (TextView) v.findViewById(R.id.tvChatName);
+                TextView msg = (TextView) v.findViewById(R.id.tvChatMessage);
                 name.setTypeface(caviar);
                 msg.setTypeface(caviar);
                 name.setText(chatContent.get(position).name);
                 msg.setText(chatContent.get(position).message);
-                name.setTextColor(Color.WHITE);
-                msg.setTextColor(Color.WHITE);
+
                 return v;
             }
         };
@@ -149,10 +173,23 @@ public class ChatView extends Activity implements View.OnClickListener{
         if(etName.getText().toString().equals("") || etMessage.getText().toString().equals("")){
             return null;
         }else{
-            ChatMessage msg = new ChatMessage(etName.getText().toString(), etMessage.getText().toString(), projectId);
+
+            SimpleDateFormat sdt = new SimpleDateFormat("LLL 1 - HH:mm", Locale.getDefault());
+
+            Log.e(TAG, "Date: " + sdt.format(new Date(System.currentTimeMillis())));
+
+            ChatMessage msg = new ChatMessage(etName.getText().toString() + "   " +
+                    sdt.format(new Date(System.currentTimeMillis()))
+                    , etMessage.getText().toString(), projectId);
             etMessage.setText("");
             return msg;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        timer.cancel();
+        super.onPause();
     }
 
     @Override
@@ -162,9 +199,9 @@ public class ChatView extends Activity implements View.OnClickListener{
                 ChatMessage msg = createChatMessage();
                 if(msg != null){
                     addChatMessage(msg);
-                }else{
-                    addChatMessage(new ChatMessage("","",projectId));
                 }
+                    addChatMessage(new ChatMessage("","",projectId));
+                chatMessageAdapter.notifyDataSetChanged();
                 break;
         }
 
