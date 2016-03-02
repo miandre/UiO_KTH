@@ -174,10 +174,9 @@ public class ChatView extends Activity implements View.OnClickListener{
             return null;
         }else{
 
-            SimpleDateFormat sdt = new SimpleDateFormat("LLL 1 - HH:mm", Locale.getDefault());
+            SimpleDateFormat sdt = new SimpleDateFormat("LLL d - HH:mm", Locale.getDefault());
 
             Log.e(TAG, "Date: " + sdt.format(new Date(System.currentTimeMillis())));
-
             ChatMessage msg = new ChatMessage(etName.getText().toString() + "   " +
                     sdt.format(new Date(System.currentTimeMillis()))
                     , etMessage.getText().toString(), projectId);
