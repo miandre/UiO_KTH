@@ -35,6 +35,7 @@ import nu.geeks.uio_kth.Database.GetTransactionCallback;
 import nu.geeks.uio_kth.Database.ServerRequest;
 import nu.geeks.uio_kth.Objects.ChatMessage;
 import nu.geeks.uio_kth.Objects.Transaction;
+import nu.geeks.uio_kth.Objects.User;
 import nu.geeks.uio_kth.R;
 
 /**
@@ -87,6 +88,8 @@ public class ChatView extends Activity implements View.OnClickListener{
         bSend.setOnClickListener(this);
         bSend.setBackgroundResource(R.drawable.refresh);
 
+
+        etName.setText(User.getName());
 
         setOnFocusListeners();
 
@@ -170,6 +173,8 @@ public class ChatView extends Activity implements View.OnClickListener{
 
     private ChatMessage createChatMessage(){
 
+        User.addName(etName.getText().toString());
+        Log.e(TAG,"addName(): "+etName.getText().toString());
         if(etName.getText().toString().equals("") || etMessage.getText().toString().equals("")){
             return null;
         }else{
@@ -208,6 +213,7 @@ public class ChatView extends Activity implements View.OnClickListener{
 
     private void addChatMessage(ChatMessage msg) {
         //Create service request
+
         ServerRequest serverRequest = new ServerRequest(this);
         serverRequest.updateChatInBackground(msg, new GetChatCallback() {
             @Override

@@ -32,6 +32,7 @@ import nu.geeks.uio_kth.Objects.Algorithms;
 import nu.geeks.uio_kth.Objects.DataProvider;
 import nu.geeks.uio_kth.Objects.Payment;
 import nu.geeks.uio_kth.Objects.Person;
+import nu.geeks.uio_kth.Objects.User;
 import nu.geeks.uio_kth.R;
 import nu.geeks.uio_kth.Objects.Transaction;
 import nu.geeks.uio_kth.Views.PopupViews;
@@ -325,6 +326,8 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         tv_what.setTypeface(caviarBold);
         tv_how_much.setTypeface(caviarBold);
 
+
+
         //Initialize buttons end edittexts.
         Button ok = (Button) dialogLayout.findViewById(R.id.bt_ok_add_trans);
         Button cancel = (Button) dialogLayout.findViewById(R.id.bt_cancel_trans);
@@ -335,6 +338,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         add_trans_by_who = (AutoCompleteTextView) dialogLayout.findViewById(R.id.et_by_who);
         add_trans_by_who.setTypeface(caviarBold);
+        add_trans_by_who.setText(User.getName());
 
         add_trans_object = (EditText) dialogLayout.findViewById(R.id.et_object);
         add_trans_object.setTypeface(caviarBold);

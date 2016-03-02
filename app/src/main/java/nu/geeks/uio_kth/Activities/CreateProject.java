@@ -100,6 +100,8 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         bView= (Button) findViewById(R.id.bCancel);
         bView.setOnClickListener(this);
 
+
+
         //Add A-Z and a-z to array.
         // icons
         for(int i = 65; i < 91; i++){
