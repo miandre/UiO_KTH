@@ -30,12 +30,17 @@
         android:id="@+id/etName"
         android:imeOptions="actionDone"
         android:singleLine="true"
-        android:hint="Name" />
+        android:hint="Name"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"/>
 
     <ListView
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="192dp"
+        android:layout_height="240dp"
         android:id="@+id/lv_chat"
         android:layout_gravity="center_horizontal"
         android:textColor="#FFFFFF"
@@ -75,7 +80,7 @@
             android:imeOptions="actionDone"
             android:background="#FFFFFF"
             android:nestedScrollingEnabled="true"
-            />
+                        android:inputType="text" />
 
 
     </RelativeLayout>

@@ -26,6 +26,7 @@
 
     <ListView
         android:paddingBottom="10dp"
+
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:id="@+id/lv_persons"
@@ -80,7 +81,7 @@
             android:background="@drawable/add"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/bShare2"
-            android:layout_marginLeft="18dp" />
+            android:layout_marginLeft="9dp" />
 
 
         <Button
@@ -88,18 +89,17 @@
             android:layout_height="76dp"
             android:id="@+id/bChat"
             android:layout_toEndOf="@+id/bt_add_trans"
-            android:layout_marginEnd="65dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="9dp"
             android:background="@drawable/chat2" />
 
         <Button
             android:layout_width="76dp"
             android:layout_height="76dp"
             android:id="@+id/bt_calculate"
-            android:layout_alignTop="@+id/bShare2"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="14dp"
+            android:layout_toEndOf="@+id/bChat"
+            android:layout_marginLeft="9dp"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/calculate" />
 
 
