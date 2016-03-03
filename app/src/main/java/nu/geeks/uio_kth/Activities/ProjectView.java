@@ -17,9 +17,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import nu.geeks.uio_kth.Adapters.ProjectDataAdapter;
+import nu.geeks.uio_kth.Database.GetTransactionCallback;
+import nu.geeks.uio_kth.Database.ServerRequest;
 import nu.geeks.uio_kth.Objects.DataProvider;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
+import nu.geeks.uio_kth.Objects.Transaction;
 import nu.geeks.uio_kth.R;
 
 
@@ -132,17 +137,37 @@ public class ProjectView extends Activity implements View.OnClickListener {
 
         if (cursor.moveToFirst()) {
             do {
-                String projectName, projectPassword, projectId, projectIcon;
+                final String projectName, projectId, projectIcon;
                 projectName = cursor.getString(0);
-                projectPassword = cursor.getString(1);
                 projectId = cursor.getString(2);
                 projectIcon = cursor.getString(3);
 
-                DataProvider dataProvider = new DataProvider(projectName, projectPassword, projectId, projectIcon);
-                projectDataAdapter.add(dataProvider);
+                //Create service request
+                ServerRequest serverRequest = new ServerRequest(this);
+                serverRequest.fetchProjectContentInBackground(projectId, new GetTransactionCallback() {
+                    @Override
+                    public void done(ArrayList<Transaction> onlineTransactions) {
+
+                        int numbTransactions = 0;
+                        for(Transaction t : onlineTransactions){
+                            if(t.projectId.equals(projectId)){
+                                numbTransactions++;
+                            }
+                        }
+                        String projectTransactions = "Has " + numbTransactions + " transactions.";
+                        DataProvider dataProvider = new DataProvider(projectName, projectTransactions, projectId, projectIcon);
+                        projectDataAdapter.add(dataProvider);
+                    }
+                });
+
+
 
             } while (cursor.moveToNext());
         }
+
+
+
+
 
         projectDataAdapter.notifyDataSetChanged();
     }
