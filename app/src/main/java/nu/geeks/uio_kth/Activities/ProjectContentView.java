@@ -315,8 +315,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         //Create a string of all payments.
         String pay = "";
-        for(Payment p : payments){
-            pay += p.from + " should pay " + p.to + " " + p.amount + "\n";
+        for(Payment p : payments)
+        {
+            pay += p.from + " should pay " + p.to + " " + p.amount + "\n\n";
         }
         PopupViews.PersonalExpensesView(this, caviarBold, pay);
     }

@@ -87,7 +87,7 @@ public class PopupViews {
         TextView text = (TextView)dialogLayout.findViewById(R.id.tv_single_person_transactions);
         text.setTypeface(font);
         text.setTextColor(Color.WHITE);
-        text.setText(msg);
+        text.setText("\n\n" + msg);
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
