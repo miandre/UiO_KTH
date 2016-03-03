@@ -22,11 +22,10 @@
         android:shadowDy="1"
         android:shadowRadius="5"/>
 
-
+<!--
 
     <ListView
         android:paddingBottom="10dp"
-
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:id="@+id/lv_persons"
@@ -39,6 +38,29 @@
         android:shadowRadius="5"
         android:background="@drawable/listbg"
         android:layout_marginTop="10dp" />
+
+    -->
+
+    <ExpandableListView
+        android:paddingBottom="10dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.45"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"
+        android:background="@drawable/listbg"
+        android:layout_marginTop="10dp"
+        android:id="@+id/simple_expandable_listview"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:divider="#000000"
+        android:childDivider="#797979"
+        android:dividerHeight="1dp" >
+    </ExpandableListView>
 
     <TextView
         android:layout_width="wrap_content"

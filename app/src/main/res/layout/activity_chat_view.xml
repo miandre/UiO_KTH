@@ -24,23 +24,10 @@
         android:shadowDy="1"
         android:shadowRadius="5"/>
 
-    <AutoCompleteTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/etName"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-        android:hint="Name"
-        android:textColor="#FFFFFF"
-        android:shadowColor="#000000"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="5"/>
-
     <ListView
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="300dp"
         android:id="@+id/lv_chat"
         android:layout_gravity="center_horizontal"
         android:textColor="#FFFFFF"
@@ -50,10 +37,9 @@
         android:shadowRadius="5"
         android:background="@drawable/listbg" />
 
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="120dp"
         android:layout_gravity="center_horizontal">
 
         <Button
@@ -72,17 +58,37 @@
             android:ems="10"
             android:gravity="top"
             android:id="@+id/etMessage"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/bt_send_msg"
             android:hint="Enter Your Message Here!"
             android:imeOptions="actionDone"
             android:background="#FFFFFF"
             android:nestedScrollingEnabled="true"
-                        android:inputType="text" />
+                        android:inputType="text"
+            android:layout_below="@+id/etName"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/bt_send_msg"
+            android:layout_alignParentBottom="true" />
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etName"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:hint="Name"
+            android:textColor="#FFFFFF"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="5"
+            android:layout_toStartOf="@+id/bt_send_msg"
+            android:background="#323232"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp" />
 
 
     </RelativeLayout>
+
 
 </LinearLayout>
