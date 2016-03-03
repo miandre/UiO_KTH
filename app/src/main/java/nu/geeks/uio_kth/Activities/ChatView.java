@@ -191,9 +191,13 @@ public class ChatView extends Activity implements View.OnClickListener{
         }else {
             spEditor.putString(DEFAULT_USER, User.addName(etName.getText().toString()));
             spEditor.commit();
-            if (etName.getText().toString().equals("") || etMessage.getText().toString().equals("")) {
+            if (etName.getText().toString().equals("") && !etMessage.getText().toString().equals("")) {
+
+                Toast.makeText(this, "Please enter your name", Toast.LENGTH_LONG).show();
                 return null;
-            } else {
+            } else if(etName.getText().toString().equals("") || etMessage.getText().toString().equals("")) {
+                return null;
+            }else{
 
                 SimpleDateFormat sdt = new SimpleDateFormat("LLL d - HH:mm", Locale.getDefault());
 

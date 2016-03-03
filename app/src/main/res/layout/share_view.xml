@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="240dp"
     android:layout_margin="20dp"
     android:background="@drawable/popup_bg"
-    android:layout_weight="0.45">
+    android:layout_weight="1.45">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,18 +53,16 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
             android:background="@drawable/fb" />
+
+        <Button
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:id="@+id/bDoneShare"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/check"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
-
-
-
-    <Button
-        android:layout_width="76dp"
-        android:layout_height="76dp"
-        android:id="@+id/bDoneShare"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/check"
-        android:layout_marginTop="50dp"
-        />
 
 
 </LinearLayout>

@@ -28,6 +28,7 @@
         android:id="@+id/et_by_who"
         android:layout_gravity="center_horizontal"
         android:hint="Who bought something?"
+        android:singleLine="true"
         android:textColor="#FFFFFF"
         android:shadowColor="#000000"
         android:shadowDx="1"
@@ -41,6 +42,8 @@
         android:textSize="25dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="What?"
+        android:singleLine="true"
+
         android:id="@+id/tv_what"
         android:layout_gravity="center_horizontal"
         android:textColor="#FFFFFF"
@@ -56,6 +59,8 @@
         android:id="@+id/et_object"
         android:layout_gravity="center_horizontal"
         android:hint="What did you buy?"
+        android:singleLine="true"
+
         android:textColor="#FFFFFF"
         android:shadowColor="#000000"
         android:shadowDx="1"

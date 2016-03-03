@@ -45,7 +45,7 @@
         android:id="@+id/etProjectName"
         android:hint="Project Name"
         android:cursorVisible="true"
-
+        android:singleLine="true"
         android:textColor="#ffffff"
         android:textColorHint="#cacaca"
         android:textColorHighlight="#ffffff" />

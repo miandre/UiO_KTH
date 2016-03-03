@@ -8,10 +8,11 @@
     android:weightSum="1"
     tools:context="com.example.micke.sqlite_test.ProjectView">
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_width="170dp"
+        android:layout_height="100dp"
         android:id="@+id/imageView"
-        android:background="@drawable/logo2" />
+        android:background="@drawable/logo2"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -12,6 +12,7 @@
         android:id="@+id/tv_single_person_transactions"
         android:textColor="#FFFFFF"
         android:shadowColor="#000000"
+        android:textSize="20dp"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="5"
