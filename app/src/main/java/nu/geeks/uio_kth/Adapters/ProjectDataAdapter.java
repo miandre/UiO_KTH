@@ -85,7 +85,7 @@ public class ProjectDataAdapter extends ArrayAdapter {
         DataProvider dataProvider = (DataProvider) this.getItem(position);
         layoutHandler.PROJECT_NAME.setText(dataProvider.getProjectName());
         //layoutHandler.PROJECT_PASSWORD.setText(dataProvider.getProjectPassword());
-        layoutHandler.PROJECT_ID.setText(dataProvider.getProjectId());
+        layoutHandler.PROJECT_ID.setText(dataProvider.getProjectPassword());
         layoutHandler.PROJECT_ICON.setText(dataProvider.getProjectIcon());
 
         return row;

@@ -44,7 +44,8 @@
         android:id="@+id/tv_project_id"
         android:text="Project ID"
         android:gravity="left"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"
+        />
 
 </LinearLayout>
 </LinearLayout>
