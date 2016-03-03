@@ -37,8 +37,8 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
 
 
     Button bCreate,bView,bShare;
-    EditText etPassword, etProjectName;
-    TextView tv_create_project,tv_create_name,tv_create_password, tv_set_icon;
+    EditText etProjectName;
+    TextView tv_create_project,tv_create_name, tv_set_icon;
     ProjectDbHelper projectDbHelper;
     SQLiteDatabase sqLiteDatabase;
     Spinner iconSpinner;
@@ -55,20 +55,6 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
        caviarBold = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
 
 
-        etPassword = (EditText) findViewById(R.id.etPassword);
-
-
-        // text removed on focus
-        etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener(){
-            public void onFocusChange(View v, boolean hasFocus){
-                if (hasFocus){
-                etPassword.setHint("");
-                }
-                else etPassword.setHint("*******");
-
-            }
-        });
-
         // text removed on focus
         etProjectName = (EditText) findViewById(R.id.etProjectName);
         etProjectName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
@@ -82,14 +68,12 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         // linking with view
         tv_create_project = (TextView) findViewById(R.id.tv_create_project);
         tv_create_name = (TextView) findViewById(R.id.tv_create_name);
-        tv_create_password = (TextView) findViewById(R.id.tv_create_password);
         tv_set_icon = (TextView) findViewById(R.id.tv_set_icon);
 
         // fonts
         tv_set_icon.setTypeface(caviarBold);
         tv_create_project.setTypeface(caviarBold);
         tv_create_name.setTypeface(caviarBold);
-        tv_create_password.setTypeface(caviarBold);
 
         // link button with view and set listener
         bCreate = (Button) findViewById(R.id.bt_done);
@@ -144,7 +128,7 @@ public class CreateProject extends Activity implements View.OnClickListener, Ada
         DataProvider dataProvider = new DataProvider();
 
         dataProvider.setProjectName(etProjectName.getText().toString());
-        dataProvider.setProjectPassword(etPassword.getText().toString());
+        dataProvider.setProjectPassword(".");
         dataProvider.setProjectIcon(spinnerArray.get(spinnerIndex));
         projectDbHelper = new ProjectDbHelper(this);
         sqLiteDatabase = projectDbHelper.getWritableDatabase();
