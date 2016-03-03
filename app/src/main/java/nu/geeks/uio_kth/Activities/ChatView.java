@@ -184,20 +184,26 @@ public class ChatView extends Activity implements View.OnClickListener{
 
     private ChatMessage createChatMessage(){
 
-        spEditor.putString(DEFAULT_USER,User.addName(etName.getText().toString()));
-        spEditor.commit();
-        if(etName.getText().toString().equals("") || etMessage.getText().toString().equals("")){
+        if (etName.getText().toString().equals("ResetUser")){
+            spEditor.clear();
+            spEditor.commit();
             return null;
-        }else{
+        }else {
+            spEditor.putString(DEFAULT_USER, User.addName(etName.getText().toString()));
+            spEditor.commit();
+            if (etName.getText().toString().equals("") || etMessage.getText().toString().equals("")) {
+                return null;
+            } else {
 
-            SimpleDateFormat sdt = new SimpleDateFormat("LLL d - HH:mm", Locale.getDefault());
+                SimpleDateFormat sdt = new SimpleDateFormat("LLL d - HH:mm", Locale.getDefault());
 
-            Log.e(TAG, "Date: " + sdt.format(new Date(System.currentTimeMillis())));
-            ChatMessage msg = new ChatMessage(etName.getText().toString() + "   " +
-                    sdt.format(new Date(System.currentTimeMillis()))
-                    , etMessage.getText().toString(), projectId);
-            etMessage.setText("");
-            return msg;
+                Log.e(TAG, "Date: " + sdt.format(new Date(System.currentTimeMillis())));
+                ChatMessage msg = new ChatMessage(etName.getText().toString() + "   " +
+                        sdt.format(new Date(System.currentTimeMillis()))
+                        , etMessage.getText().toString(), projectId);
+                etMessage.setText("");
+                return msg;
+            }
         }
     }
 
