@@ -52,7 +52,7 @@
         android:layout_gravity="center_horizontal">
 
         <Button
-            android:layout_width="89dp"
+            android:layout_width="76dp"
             android:layout_height="76dp"
             android:id="@+id/bt_send_msg"
             android:background="@drawable/check"

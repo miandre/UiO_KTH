@@ -44,7 +44,7 @@
 
     </ListView>
     <Button
-        android:layout_width="89dp"
+        android:layout_width="76dp"
         android:layout_height="76dp"
         android:id="@+id/bNewProject"
         android:layout_gravity="right"

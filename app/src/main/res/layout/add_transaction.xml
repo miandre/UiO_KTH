@@ -88,7 +88,7 @@
         android:layout_marginLeft="10dp">
 
         <Button
-            android:layout_width="89dp"
+            android:layout_width="76dp"
             android:layout_height="76dp"
             android:id="@+id/bt_ok_add_trans"
             android:layout_alignParentTop="true"
@@ -96,7 +96,7 @@
             android:background="@drawable/check" />
 
         <Button
-            android:layout_width="89dp"
+            android:layout_width="76dp"
             android:layout_height="76dp"
             android:id="@+id/bt_cancel_trans"
             android:layout_alignParentTop="true"

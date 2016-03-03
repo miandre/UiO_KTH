@@ -101,11 +101,11 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="190dp"
         android:layout_gravity="center_horizontal">
 
         <Button
-            android:layout_width="89dp"
+            android:layout_width="76dp"
             android:layout_height="76dp"
             android:id="@+id/bt_done"
             android:layout_alignParentBottom="true"
@@ -115,7 +115,7 @@
             android:layout_marginBottom="15dp" />
 
         <Button
-            android:layout_width="89dp"
+            android:layout_width="76dp"
             android:layout_height="76dp"
             android:id="@+id/bCancel"
             android:background="@drawable/cancel"

@@ -115,8 +115,8 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         calculate = (Button) findViewById(R.id.bt_calculate);
         calculate.setOnClickListener(this);
 
-        bBack = (Button) findViewById(R.id.bBack);
-        bBack.setOnClickListener(this);
+    //    bBack = (Button) findViewById(R.id.bBack);
+    //    bBack.setOnClickListener(this);
 
         bChat = (Button) findViewById(R.id.bChat);
         bChat.setOnClickListener(this);
@@ -299,9 +299,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
             case R.id.bt_calculate:
                 openCalculatePopup();
                 break;
-            case R.id.bBack:
-                viewProjects();
-                break;
+         //   case R.id.bBack:
+         //       viewProjects();
+         //       break;
             case R.id.bChat:
                 viewChat();
                 break;
