@@ -37,10 +37,12 @@
         android:layout_width="fill_parent"
         android:layout_height="250dp"
         android:id="@+id/project_view"
-        android:paddingBottom="10dp"
+        android:padding="7dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.45"
         android:background="@drawable/listbg"
+        android:dividerHeight="1dp"
+        android:divider="#000000"
 
         >
 
