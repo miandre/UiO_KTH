@@ -93,7 +93,7 @@ public class ImportProjectView extends Activity implements View.OnClickListener 
                 //Display name of imported project
 
                 project_name.setText(projectToAdd.getProjectName());
-                project_id.setText(projectToAdd.getProjectId());
+                project_id.setText("");
                 project_icon.setText(projectToAdd.getProjectIcon());
             }
         });
