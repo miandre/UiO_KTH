@@ -42,6 +42,9 @@ public class ProjectContentAdapter extends BaseExpandableListAdapter {
         generateData();
     }
 
+
+    //Method to generate a HashMap handled by the adapter when generating the expandable
+    //list view
     private void generateData(){
         ArrayList<Transaction> temp = new ArrayList<>();
 
@@ -102,6 +105,8 @@ public class ProjectContentAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+
+    // The group view (the view with name and total sum) is generated here.
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         // Getting header title
@@ -114,9 +119,9 @@ public class ProjectContentAdapter extends BaseExpandableListAdapter {
 
         // Inflating header layout and setting text
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
+            LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+            convertView = layoutInflater.inflate(android.R.layout.simple_list_item_2, parent, false);
         }
 
         TextView header_text = (TextView) convertView.findViewById(android.R.id.text1);
@@ -145,6 +150,8 @@ public class ProjectContentAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+
+    //The child view (the view with individual objects and their cost) is generated here.
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
@@ -153,7 +160,7 @@ public class ProjectContentAdapter extends BaseExpandableListAdapter {
         // Getting child text
         final Transaction childText = (Transaction) getChild(groupPosition, childPosition);
 
-        // Inflating child layout and setting textview
+        // Inflating child layout and setting textviews
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -60,10 +60,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
     ArrayList<Transaction> transactions; //This holds all the transactions.
     ArrayList<Person> persons; //This holds one instance of all people in this project, and their total sum.
-    ArrayAdapter<Person> personArrayAdapter; //This is the array adapter for the list view.
 
-
-    ListView listView;
     Button add_transaction, bShare, calculate, bBack, bChat;
     Typeface caviarBold;
 
@@ -122,8 +119,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         calculate = (Button) findViewById(R.id.bt_calculate);
         calculate.setOnClickListener(this);
 
-    //    bBack = (Button) findViewById(R.id.bBack);
-    //    bBack.setOnClickListener(this);
+
 
         bChat = (Button) findViewById(R.id.bChat);
         bChat.setOnClickListener(this);
@@ -249,11 +245,12 @@ public class ProjectContentView extends Activity implements View.OnClickListener
             @Override
             public void done(int projectPosition) {
 
+                setListView();
             }
 
             @Override
             public void done(DataProvider projectToAdd) {
-
+                Log.e(TAG,"Callback 2");
             }
         });
         update();
