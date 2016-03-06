@@ -46,6 +46,10 @@ import nu.geeks.uio_kth.Views.PopupViews;
  */
 public class ProjectContentView extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener{
 
+    //TODO Show current status (+/- amount) for each person in the list view.
+    //Perhaps add a value to the persons object?
+
+
     private int projectPosition;
     private String projectId;
     private String projectNameString;
@@ -132,7 +136,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
     }
 
-    //Retreive projet content from online service
+    //Retreive project content from online database
     private void getOnlineData() {
 
         //Create service request
@@ -140,7 +144,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         serverRequest.fetchProjectContentInBackground(projectId, new GetTransactionCallback() {
             @Override
             public void done(ArrayList<Transaction> onlineTransactions) {
-                //reference online data to lokal transaction list
+                //reference online data to local transaction list
                 transactions = onlineTransactions;
 
                 //Update lists of persons
@@ -152,7 +156,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     }
 
 
-    // expenses list (totals)
+    // Create the expandable listview showing persons and transactions.
     private void setListView() {
 
         expandableListView = (ExpandableListView) findViewById(R.id.simple_expandable_listview);
@@ -164,6 +168,8 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         update();
 
     }
+
+    //Add all persons ho have mad a transaction to the list of persons.
 
     private void fillPersonList(){
 
@@ -184,7 +190,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
     }
 
-
+    //Get the name and the ID of the current project
     private String getName(int projectPosition){
 
         ProjectDbHelper dbHelper = new ProjectDbHelper(getApplicationContext());
@@ -198,7 +204,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
 
 
-    // read the expenses
+    // read the expenses from the local database (not used atm)
     private void readTransactions(){
 
         transactionsDbHelper = new TransactionsDbHelper(this);
@@ -244,7 +250,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         serverRequest.storeTransactionDataInBackground(transaction, new GetProjectCallback() {
             @Override
             public void done(int projectPosition) {
-
+                //Updating the list view after adding transaction.
                 setListView();
             }
 
@@ -253,7 +259,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
                 Log.e(TAG,"Callback 2");
             }
         });
-        update();
+
     }
 
     // recount total expenses (all people), make sure listview is up to date
@@ -268,6 +274,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         projectContentAdapter.notifyDataSetChanged();
     }
 
+    //Getting the list of current members to generate outocomplete-list
     public String[] getNameList(){
         String[] names = new String[persons.size()];
         int i = 0;
@@ -290,9 +297,6 @@ public class ProjectContentView extends Activity implements View.OnClickListener
             case R.id.bt_calculate:
                 openCalculatePopup();
                 break;
-         //   case R.id.bBack:
-         //       viewProjects();
-         //       break;
             case R.id.bChat:
                 viewChat();
                 break;
