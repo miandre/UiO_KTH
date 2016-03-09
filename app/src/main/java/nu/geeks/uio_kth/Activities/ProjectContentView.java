@@ -9,30 +9,33 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import nu.geeks.uio_kth.Adapters.ProjectContentAdapter;
+import nu.geeks.uio_kth.Database.GetChatCallback;
 import nu.geeks.uio_kth.Database.GetProjectCallback;
 import nu.geeks.uio_kth.Database.GetTransactionCallback;
 import nu.geeks.uio_kth.Database.ProjectDbHelper;
 import nu.geeks.uio_kth.Database.ServerRequest;
 import nu.geeks.uio_kth.Database.TransactionsDbHelper;
 import nu.geeks.uio_kth.Objects.Algorithms;
+import nu.geeks.uio_kth.Objects.ChatMessage;
 import nu.geeks.uio_kth.Objects.DataProvider;
 import nu.geeks.uio_kth.Objects.Payment;
 import nu.geeks.uio_kth.Objects.Person;
@@ -71,14 +74,21 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     static final String TAG = "ContentView";
     private final String LOCAL_STORAGE = "LOCALE_STORAGE";
     static final String DEFAULT_USER = "default_user";
+    static final String CHAT_LENGTH = "chat_length";
 
 
-    SharedPreferences localStorage;
-    SharedPreferences.Editor spEditor;
+
+    SharedPreferences localStorage,chatLengthStorage;
+    SharedPreferences.Editor spEditor,chatEditor;
 
     ProjectContentAdapter projectContentAdapter;
     ExpandableListView expandableListView;
 
+    int chatLength;
+
+    CountDownTimer timer;
+
+    final Animation animation = new AlphaAnimation(1.0f, 0.5f);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,12 +138,45 @@ public class ProjectContentView extends Activity implements View.OnClickListener
         bChat = (Button) findViewById(R.id.bChat);
         bChat.setOnClickListener(this);
 
+        animation.setDuration(500); // duration - half a second
+        animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+        animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+        animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
+
+
+
+        chatLengthStorage = this.getSharedPreferences(projectId+"_chat", 0);
+        chatEditor = chatLengthStorage.edit();
+
+        chatLength = chatLengthStorage.getInt(CHAT_LENGTH,0);
+
         getOnlineData();
 
-        //readTransactions();
-        //fillPersonList();
-        //setListView();
+        timer = new CountDownTimer(10000, 3000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                updateOnlineData();
 
+            }
+
+            @Override
+            public void onFinish() {
+                start();
+            }
+        }.start();
+
+    }
+
+    @Override
+    protected void onResume() {
+        timer.start();
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        timer.start();
+        super.onRestart();
     }
 
     //Retreive project content from online database
@@ -154,6 +197,29 @@ public class ProjectContentView extends Activity implements View.OnClickListener
             }
         });
     }
+
+    private void updateOnlineData() {
+
+        //Create service request
+        ServerRequest serverRequest = new ServerRequest(this);
+        serverRequest.fetchProjectContentInBackground(projectId, new GetTransactionCallback() {
+            @Override
+            public void done(ArrayList<Transaction> onlineTransactions) {
+                //reference online data to local transaction list
+                if (onlineTransactions.size() > transactions.size()) {
+                    transactions = onlineTransactions;
+                    //Update lists of persons
+                    fillPersonList();
+                    //Create/set the list view
+                    setListView();
+                }
+                checkForChatMessage(new ChatMessage("", "", projectId));
+            }
+        });
+    }
+
+
+
 
 
     // Create the expandable listview showing persons and transactions.
@@ -256,7 +322,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
             @Override
             public void done(DataProvider projectToAdd) {
-                Log.e(TAG,"Callback 2");
+                Log.e(TAG, "Callback 2");
             }
         });
 
@@ -299,8 +365,28 @@ public class ProjectContentView extends Activity implements View.OnClickListener
                 break;
             case R.id.bChat:
                 viewChat();
+                bChat.clearAnimation();
                 break;
         }
+    }
+
+    private void checkForChatMessage(ChatMessage msg) {
+        //Create service request
+
+        ServerRequest serverRequest = new ServerRequest(this);
+        serverRequest.updateChatInBackground(msg, new GetChatCallback() {
+            @Override
+            public void done(ArrayList<ChatMessage> newChatContent) {
+             if (newChatContent.size()>chatLengthStorage.getInt(CHAT_LENGTH,0)){
+                 bChat.startAnimation(animation);
+
+                }
+
+            }
+        });
+
+
+
     }
 
     private void openCalculatePopup() {
@@ -456,6 +542,12 @@ public class ProjectContentView extends Activity implements View.OnClickListener
     public void onBackPressed() {
         super.onBackPressed();
         viewProjects();
+    }
+
+    @Override
+    protected void onPause() {
+        timer.cancel();
+        super.onPause();
     }
 
     public void viewProjects(){

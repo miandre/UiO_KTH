@@ -82,7 +82,7 @@ public class ServerRequest {
 
     //Method called to fetch project data. Opens e progress dialog and calls an Asynchronus background task.
     public void fetchProjectContentInBackground(String project_id, GetTransactionCallback transactionCallback){
-        progressDialog.show();
+        //progressDialog.show();
         new fetchProjectContentAsyncTask(project_id, transactionCallback).execute();
 
     }

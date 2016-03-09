@@ -16,7 +16,7 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="3"
-        android:textColor="#4d4d4d"/>
+        android:textColor="#6e6e6e"/>
 
     <TextView
         android:layout_width="match_parent"

@@ -9,6 +9,8 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -66,9 +68,12 @@ public class ChatView extends Activity implements View.OnClickListener{
     private final String LOCAL_STORAGE = "LOCALE_STORAGE";
     static final String DEFAULT_USER = "default_user";
 
+    static final String CHAT_LENGTH = "chat_length";
+    int chatLength;
+    SharedPreferences localStorage,chatLengthStorage;
+    SharedPreferences.Editor spEditor,chatEditor;
 
-    SharedPreferences localStorage;
-    SharedPreferences.Editor spEditor;
+
 
 
 
@@ -77,7 +82,7 @@ public class ChatView extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_view);
 
-        localStorage = this.getSharedPreferences(LOCAL_STORAGE,0);
+        localStorage = this.getSharedPreferences(LOCAL_STORAGE, 0);
         spEditor = localStorage.edit();
 
         Bundle b = getIntent().getExtras();
@@ -87,6 +92,10 @@ public class ChatView extends Activity implements View.OnClickListener{
         listView = (ListView) findViewById(R.id.lv_chat);
         caviar = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
         listViewInitialized = false;
+
+        chatLengthStorage = this.getSharedPreferences(projectId+"_chat", 0);
+        chatEditor = chatLengthStorage.edit();
+
 
         addChatMessage(new ChatMessage("", "", projectId)); //Adding empty to update list
 
@@ -100,7 +109,7 @@ public class ChatView extends Activity implements View.OnClickListener{
         bSend.setBackgroundResource(R.drawable.refresh);
 
 
-        etName.setText(localStorage.getString(DEFAULT_USER,""));
+        etName.setText(localStorage.getString(DEFAULT_USER, ""));
 
         setOnFocusListeners();
 
@@ -108,6 +117,9 @@ public class ChatView extends Activity implements View.OnClickListener{
             @Override
             public void onTick(long millisUntilFinished) {
                 addChatMessage(new ChatMessage("", "", projectId));
+                chatLength=chatContent.size();
+
+
             }
 
             @Override
@@ -115,6 +127,8 @@ public class ChatView extends Activity implements View.OnClickListener{
                 start();
             }
         }.start();
+        chatContent=new ArrayList<>();
+        chatLength=chatContent.size();
 
     }
 
@@ -243,8 +257,11 @@ public class ChatView extends Activity implements View.OnClickListener{
 
 
                     createListView();
-                    chatMessageAdapter.notifyDataSetChanged();
-                    listView.setSelection(chatContent.size()-1);
+                chatMessageAdapter.notifyDataSetChanged();
+                listView.setSelection(chatContent.size() - 1);
+                chatEditor.putInt(CHAT_LENGTH,chatContent.size());
+                chatEditor.commit();
+
 
             }
         });
