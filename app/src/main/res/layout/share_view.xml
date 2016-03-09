@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="240dp"
-    android:layout_margin="20dp"
+    android:layout_height="wrap_content"
+    android:paddingTop="30dp"
+    android:paddingBottom="40dp"
     android:background="@drawable/popup_bg"
-    android:layout_weight="1.45">
+    android:layout_weight="0.45">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +25,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.3">
 
         <Button
             android:layout_width="56dp"
@@ -61,7 +63,8 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/check"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 
 

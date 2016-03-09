@@ -152,7 +152,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
         getOnlineData();
 
-        timer = new CountDownTimer(10000, 3000) {
+        timer = new CountDownTimer(10000, 4000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 updateOnlineData();
@@ -175,7 +175,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
     @Override
     protected void onRestart() {
-        timer.start();
+        //timer.start();
         super.onRestart();
     }
 

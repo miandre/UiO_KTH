@@ -39,7 +39,7 @@ public class ServerRequest {
 
     ProgressDialog progressDialog;
     public static final int CONNECTION_TIMEOUT = 1000 * 15;
-    public static final String SERVER_ADDRESS = "http://iou.16mb.com/";
+    public static final String SERVER_ADDRESS = "http://www.geeks.terminalprospect.com/UIO/";
     static final String TAG = "ServerRequest";
 
     public ServerRequest(Context context) {
