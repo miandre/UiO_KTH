@@ -51,7 +51,7 @@ public class ProjectContentAdapter extends BaseExpandableListAdapter {
         for (Person p: this.persons) {
             for (Transaction t:this.transactions) {
                 if (p.name.equals(t.person)){
-                    Log.e(TAG,t.object);
+                    //Log.e(TAG,t.object);
                     temp.add(t);
                 }
 

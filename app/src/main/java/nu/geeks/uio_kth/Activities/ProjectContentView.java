@@ -100,7 +100,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
 
 
-        Log.e(TAG, Integer.toString(localStorage.getInt("Micke", 0)));
+        //Log.e(TAG, Integer.toString(localStorage.getInt("Micke", 0)));
 
         caviarBold = Typeface.createFromAsset(getAssets(), "CaviarDreams_Bold.ttf");
 
@@ -284,9 +284,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
                 //If this transaction belongs to this project.
                 if(transaction.projectId.equals(projectId)) {
                     transactions.add(transaction);
-                    Log.e(TAG, "Added person: " + transaction.person);
+                    //Log.e(TAG, "Added person: " + transaction.person);
                 }else{
-                    Log.e(TAG, "Not in this project: " + transaction.projectId + "!=" + projectId);
+                    //Log.e(TAG, "Not in this project: " + transaction.projectId + "!=" + projectId);
                 }
 
             } while (cursorContent.moveToNext());
@@ -322,7 +322,7 @@ public class ProjectContentView extends Activity implements View.OnClickListener
 
             @Override
             public void done(DataProvider projectToAdd) {
-                Log.e(TAG, "Callback 2");
+               // Log.e(TAG, "Callback 2");
             }
         });
 
@@ -493,9 +493,9 @@ public class ProjectContentView extends Activity implements View.OnClickListener
                 // verify not empty
                 if (amount.equals("") || object.equals("") || byWho.equals("")){
                     Toast.makeText(getApplicationContext(), "You have to add something", Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "okButton failed");
+                    //Log.e(TAG, "okButton failed");
                 }else{
-                    Log.e(TAG, "okButton OK");
+                    //Log.e(TAG, "okButton OK");
                     // add expense
                     Transaction transaction = new Transaction(projectId, byWho, amount, object);
                     addTransaction(transaction);

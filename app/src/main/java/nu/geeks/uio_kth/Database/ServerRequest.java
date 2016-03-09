@@ -177,8 +177,8 @@ public class ServerRequest {
             dataToSend.add(new BasicNameValuePair("object", transaction.object));
 
             //Debug
-            Log.e(TAG, "Store Transaction: \nID: "+transaction.projectId+ "\nName: "+transaction.person
-                    +"\nAmount: "+String.valueOf(transaction.amount)+"\n Object: "+transaction.object);
+            //Log.e(TAG, "Store Transaction: \nID: "+transaction.projectId+ "\nName: "+transaction.person
+            //        +"\nAmount: "+String.valueOf(transaction.amount)+"\n Object: "+transaction.object);
 
             //Create the http request and set timeout-time
             HttpParams httpRequestParams = new BasicHttpParams();
@@ -249,7 +249,7 @@ public class ServerRequest {
 
                 HttpEntity entity = httpResponse.getEntity();
                 String result = EntityUtils.toString(entity);
-                Log.e("jsonAnswer: ", result);
+                //Log.e("jsonAnswer: ", result);
 
                 //Create JSON object to store handle recieved data
                 JSONObject jsonObject = new JSONObject(result);
@@ -267,7 +267,7 @@ public class ServerRequest {
                     String project_icon = jsonObject.getString("icon");
                     //String project_currency = jsonObject.getString("currency");
                     projectToAdd = new DataProvider(project_name,project_password,project_id,project_icon);
-                    Log.e(TAG,"Created projectToAdd");
+                    //Log.e(TAG,"Created projectToAdd");
                 }
 
             } catch (Exception e) {
@@ -314,7 +314,7 @@ public class ServerRequest {
 
             //Add the data to send
             dataToSend.add(new BasicNameValuePair("project_id", project_id));
-            Log.e("sending project ID: ", project_id);
+            //Log.e("sending project ID: ", project_id);
 
             //Create http parameters to send
             HttpParams httpRequestParams = new BasicHttpParams();
@@ -333,7 +333,7 @@ public class ServerRequest {
 
                 HttpEntity entity = httpResponse.getEntity();
                 String result = EntityUtils.toString(entity);
-                Log.e("jsonAnswer: ", result);
+                //Log.e("jsonAnswer: ", result);
 
                 //Create JSON array to handle recieved data
                 JSONArray jsonArray = new JSONArray(result);
@@ -411,7 +411,7 @@ public class ServerRequest {
             dataToSend.add(new BasicNameValuePair("name", chatMessage.name));
             dataToSend.add(new BasicNameValuePair("message", chatMessage.message));
             dataToSend.add(new BasicNameValuePair("project_id", chatMessage.project_id));
-            Log.e("sending project ID: ", chatMessage.project_id);
+            //Log.e("sending project ID: ", chatMessage.project_id);
 
             //Create http parameters to send
             HttpParams httpRequestParams = new BasicHttpParams();
@@ -430,7 +430,7 @@ public class ServerRequest {
 
                 HttpEntity entity = httpResponse.getEntity();
                 String result = EntityUtils.toString(entity);
-                Log.e("jsonAnswer: ", result);
+                //Log.e("jsonAnswer: ", result);
 
                 //Create JSON array to handle recieved data
                 JSONArray jsonArray = new JSONArray(result);
